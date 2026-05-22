@@ -17,6 +17,16 @@
     href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
     rel="stylesheet">
   <style>
+    /**
+     * PORTFOLIO STYLESHEET
+     * --------------------
+     * 1. Core Variables & Setup
+     * 2. Typography & Layout
+     * 3. Navigation
+     * 4. Components (Music Player, Cursor)
+     * 5. Sections (Hero, About, Skills, Projects)
+     * 6. Utilities & Animations
+     */
     :root {
       --red: #FF2035;
       --cyan: #00F0FF;
@@ -883,18 +893,52 @@
 
     .about-portrait {
       position: relative;
+      z-index: 1;
+    }
+
+    .about-portrait::before {
+      content: '';
+      position: absolute;
+      top: 24px;
+      left: 24px;
+      width: 100%;
+      height: 100%;
+      border: 1px solid var(--red);
+      opacity: 0.2;
+      z-index: -1;
+      transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .about-portrait:hover::before {
+      top: 12px;
+      left: 12px;
+      opacity: 0.6;
     }
 
     .portrait-frame {
       width: 100%;
       aspect-ratio: 15/19;
       background: var(--bg3);
-      border: 1px solid var(--border);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
       position: relative;
       overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
+      transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .about-portrait:hover .portrait-frame {
+      transform: translate(-4px, -4px);
+    }
+
+    .portrait-img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      z-index: 1;
     }
 
     .portrait-placeholder {
@@ -902,6 +946,8 @@
       font-size: 8rem;
       color: rgba(255, 255, 255, 0.04);
       letter-spacing: 0.05em;
+      position: absolute;
+      z-index: 0;
     }
 
     .portrait-accent {
@@ -911,6 +957,7 @@
       width: 60%;
       height: 4px;
       background: var(--red);
+      z-index: 5;
     }
 
     .portrait-tag {
@@ -925,7 +972,13 @@
       text-transform: uppercase;
       padding: 1.2rem 0.75rem;
       writing-mode: vertical-rl;
-      transform: rotate(180deg);
+      transform: translate(0, 0) rotate(180deg);
+      z-index: 10;
+      transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .about-portrait:hover .portrait-tag {
+      transform: translate(-4px, -4px) rotate(180deg);
     }
 
     .about-content {
@@ -1673,7 +1726,7 @@
       display: inline-flex;
       align-items: center;
       gap: 0.75rem;
-      transition: opacity 0.2s, transform 0.2s;
+      transition: all 0.4s ease;
     }
 
     .form-submit:hover {
@@ -1898,6 +1951,8 @@
         <div class="about-grid">
           <div class="about-portrait">
             <div class="portrait-frame">
+              <img src="assets/profile/profile.webp" alt="Harshal Gore" class="portrait-img"
+                onerror="this.style.display='none'">
               <div class="portrait-placeholder">[ ME ]</div>
               <div class="portrait-accent"></div>
             </div>
@@ -2440,15 +2495,15 @@
             </div>
 
             <p class="proj-disp-desc">
-              Description goes here...
+              <!-- Dynamically injected project description -->
             </p>
 
             <div class="proj-disp-tags">
-              <!-- populated via JS -->
+              <!-- Dynamically injected tags -->
             </div>
 
             <div class="proj-disp-links">
-              <!-- populated via JS -->
+              <!-- Dynamically injected external links -->
             </div>
           </div>
 
@@ -2464,7 +2519,7 @@
               <button id="fullscreen-btn" class="proj-fullscreen-btn" title="Toggle Fullscreen">⛶</button>
             </div>
             <div class="proj-gallery-thumbs" id="proj-gallery-thumbs">
-              <!-- Populated via JS -->
+              <!-- Dynamically injected media thumbnails -->
             </div>
           </div>
         </div>
@@ -2907,11 +2962,11 @@
                 </div>
                 <span class="contact-link-arrow">→</span>
               </a>
-              <a href="https://steamcommunity.com/profiles/76561199151074635/" class="contact-link" target="_blank"
+              <a href="https://harshal-gore.github.io/harshal-gore/" class="contact-link" target="_blank"
                 rel="noopener">
                 <div>
                   <div class="contact-link-label">Portfolio Website</div>
-                  <div class="contact-link-val">website</div>
+                  <div class="contact-link-val">https://harshal-gore.github.io/harshal-gore/</div>
                 </div>
                 <span class="contact-link-arrow">→</span>
               </a>
@@ -3037,6 +3092,12 @@
 
   </div>
   <script>
+    /**
+     * PORTFOLIO INTERACTIVITY
+     * -----------------------
+     * Responsible for dynamic media loading, custom cursor physics, 
+     * scroll-based intersection observers, and UI state management.
+     */
     function getInternalY(el) {
       let y = 0;
       while (el && el.id !== 'scroll-container') {
@@ -3903,7 +3964,67 @@
       });
     });
 
-    // Contact Form Test Logic Removed - Now using real FormSubmit
+
+
+    // Contact Form AJAX Submission
+    const contactForm = document.getElementById('contact-form');
+    if (contactForm) {
+      contactForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const submitBtn = contactForm.querySelector('.form-submit');
+        const formData = new FormData(contactForm);
+        const originalText = submitBtn.innerHTML;
+
+        // Loading state
+        submitBtn.innerHTML = 'Transmitting...';
+        submitBtn.style.opacity = '0.7';
+        submitBtn.style.pointerEvents = 'none';
+
+        fetch("https://formsubmit.co/ajax/harshalgore.work@gmail.com", {
+          method: "POST",
+          body: formData
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              // Success State
+              submitBtn.innerHTML = 'Transmission Successful! ✔';
+              submitBtn.style.background = '#00ff88'; // Cyberpunk green
+              submitBtn.style.color = '#000';
+              submitBtn.style.borderColor = '#00ff88';
+              submitBtn.style.opacity = '1';
+
+              contactForm.reset();
+
+              // Revert back after 5 seconds
+              setTimeout(() => {
+                submitBtn.innerHTML = originalText;
+                submitBtn.style.background = '';
+                submitBtn.style.color = '';
+                submitBtn.style.borderColor = '';
+                submitBtn.style.pointerEvents = 'auto';
+              }, 5000);
+            } else {
+              throw new Error('Form submission failed');
+            }
+          })
+          .catch(error => {
+            console.error(error);
+            submitBtn.innerHTML = 'Connection Failed ❌';
+            submitBtn.style.background = 'var(--red)';
+            submitBtn.style.color = '#fff';
+            submitBtn.style.opacity = '1';
+
+            setTimeout(() => {
+              submitBtn.innerHTML = originalText;
+              submitBtn.style.background = '';
+              submitBtn.style.color = '';
+              submitBtn.style.pointerEvents = 'auto';
+            }, 3000);
+          });
+      });
+    }
 
     // Fullscreen and Cursor Logic
     const fsBtn = document.getElementById('fullscreen-btn');
