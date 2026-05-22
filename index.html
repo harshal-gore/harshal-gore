@@ -1,0 +1,3951 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Harshal Gore - Game Developer</title>
+  <meta name="description"
+    content="Portfolio of Harshal Gore, a Game Developer with 7+ years of experience turning ambitious concepts into highly polished, performant interactive experiences.">
+  <meta property="og:title" content="Harshal Gore - Game Developer">
+  <meta property="og:description" content="Portfolio of Harshal Gore, a Game Developer with 7+ years of experience.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#FF2035">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --red: #FF2035;
+      --cyan: #00F0FF;
+      --bg: #080808;
+      --bg2: #0f0f0f;
+      --bg3: #141414;
+      --border: rgba(255, 255, 255, 0.06);
+      --text: #E8E2D9;
+      --muted: #666;
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body: 'Rajdhani', sans-serif;
+      --font-mono: 'Space Mono', monospace;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: #000;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+    }
+
+    #app-viewport {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 17px;
+      line-height: 1.6;
+      width: 2560px;
+      height: 1440px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform-origin: center center;
+      transform: translate(-50%, -50%);
+      overflow: hidden;
+    }
+
+    #scroll-container {
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+      position: relative;
+    }
+
+    #scroll-container::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    #scroll-container::-webkit-scrollbar-track {
+      background: var(--bg);
+    }
+
+    #scroll-container::-webkit-scrollbar-thumb {
+      background: var(--red);
+    }
+
+    /* -- NOISE OVERLAY -- */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.02;
+      pointer-events: none;
+      z-index: 10001;
+    }
+
+    /* -- PRELOADER -- */
+    #preloader {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      transition: opacity 0.5s ease;
+    }
+
+    .preloader-text {
+      font-size: 1rem;
+      letter-spacing: 0.2em;
+      margin-bottom: 1rem;
+      color: var(--red);
+    }
+
+    #preloader-msg {
+      color: #FFF;
+    }
+
+    .preloader-bar {
+      width: 200px;
+      height: 2px;
+      background: rgba(255, 32, 53, 0.2);
+    }
+
+    .preloader-fill {
+      height: 100%;
+      width: 0%;
+      background: #FFF;
+      box-shadow: 0 0 15px var(--red);
+      transition: width 0.1s linear;
+    }
+
+    .preloader-text,
+    .preloader-bar {
+      z-index: 10;
+    }
+
+    .preloader-terminal {
+      position: absolute;
+      top: 5%;
+      left: 5%;
+      right: 5%;
+      bottom: 30%;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.3);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      overflow: hidden;
+      text-align: left;
+      z-index: 1;
+      pointer-events: none;
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 25%);
+      mask-image: linear-gradient(to bottom, transparent 0%, black 25%);
+    }
+
+    .spinner {
+      position: relative;
+      width: 60px;
+      height: 60px;
+      margin-bottom: 2rem;
+      z-index: 10;
+    }
+
+    .spinner-ring {
+      position: absolute;
+      inset: 0;
+      border: 2px solid rgba(255, 255, 255, 0.05);
+      border-top-color: var(--red);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    .spinner-dot {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 6px;
+      height: 6px;
+      background: #FFF;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 10px #FFF;
+      animation: pulse 1.5s ease infinite;
+    }
+
+    @keyframes spin {
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 0.3;
+        transform: translate(-50%, -50%) scale(1);
+      }
+
+      50% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.8);
+      }
+    }
+
+    /* -- NAV -- */
+    nav {
+      position: sticky;
+      margin-bottom: -64px;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 3rem;
+      height: 64px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(8, 8, 8, 0.85);
+      backdrop-filter: blur(12px);
+    }
+
+    /* -- MUSIC PLAYER WIDGET -- */
+    .music-player {
+      position: absolute;
+      bottom: 2rem;
+      left: 2rem;
+      z-index: 1000;
+      background: rgba(8, 8, 8, 0.6);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow: hidden;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Minimized state */
+    .music-player:not(.maximized) {
+      height: 48px;
+      padding: 0 1rem;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .music-player:not(.maximized):hover {
+      border-color: rgba(255, 32, 53, 0.5);
+      background: rgba(8, 8, 8, 0.8);
+    }
+
+    @keyframes attentionPulse {
+      0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(255, 32, 53, 0);
+        border-color: var(--border);
+      }
+
+      50% {
+        transform: scale(1.1);
+        box-shadow: 0 0 25px rgba(255, 32, 53, 0.8);
+        border-color: var(--red);
+      }
+
+      100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(255, 32, 53, 0);
+        border-color: var(--border);
+      }
+    }
+
+    .music-player.attention {
+      animation: attentionPulse 0.8s ease-in-out 2;
+    }
+
+    .music-min {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .music-min-icon {
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      opacity: 0.5;
+    }
+
+    .music-player.playing .music-min-icon {
+      color: var(--red);
+      opacity: 1;
+    }
+
+    .music-player.maximized .music-min {
+      display: none;
+    }
+
+    /* Maximized state */
+    .music-player.maximized {
+      width: 320px;
+      padding: 1.5rem;
+      cursor: default;
+      background: rgba(8, 8, 8, 0.85);
+      border-color: rgba(255, 32, 53, 0.4);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(255, 32, 53, 0.05);
+    }
+
+    .music-max {
+      display: none;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .music-player.maximized .music-max {
+      display: flex;
+    }
+
+    .music-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding-bottom: 0.75rem;
+    }
+
+    .now-playing-label {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      color: var(--red);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.3s;
+    }
+
+    .music-player:not(.playing) .now-playing-label {
+      color: var(--muted);
+    }
+
+    .pulse-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--red);
+      border-radius: 50%;
+      animation: pulseDot 1.5s infinite;
+      transition: background 0.3s;
+    }
+
+    .music-player:not(.playing) .pulse-dot {
+      background: var(--muted);
+      animation: none;
+    }
+
+    @keyframes pulseDot {
+      0% {
+        box-shadow: 0 0 0 0 rgba(255, 32, 53, 0.7);
+      }
+
+      70% {
+        box-shadow: 0 0 0 6px rgba(255, 32, 53, 0);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(255, 32, 53, 0);
+      }
+    }
+
+    .music-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .music-track {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      color: var(--text);
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .music-artist {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .music-scrubber-container {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      color: var(--muted);
+    }
+
+    .music-scrubber {
+      flex: 1;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 2px;
+      position: relative;
+      cursor: none !important;
+      overflow: hidden;
+    }
+
+    .scrubber-fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 0%;
+      background: var(--red);
+      box-shadow: 0 0 10px var(--red);
+      pointer-events: none;
+    }
+
+    .music-controls-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 0.5rem;
+    }
+
+    .music-btn {
+      background: none;
+      border: none;
+      color: var(--text);
+      opacity: 0.7;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.2s, transform 0.2s, color 0.2s;
+      padding: 0.25rem;
+    }
+
+    .music-btn:hover {
+      opacity: 1;
+      color: var(--red);
+      transform: scale(1.1);
+    }
+
+    .music-btn.play-btn {
+      color: var(--bg);
+      background: var(--red);
+      opacity: 1;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      box-shadow: 0 0 15px rgba(255, 32, 53, 0.4);
+    }
+
+    .music-min .play-btn {
+      width: 32px;
+      height: 32px;
+      background: rgba(255, 32, 53, 0.1);
+      color: var(--red);
+      border: 1px solid rgba(255, 32, 53, 0.3);
+      box-shadow: none;
+    }
+
+    .music-btn.play-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(255, 32, 53, 0.6);
+    }
+
+    .close-btn {
+      color: var(--muted);
+      padding: 0.25rem;
+      margin: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+      width: 28px;
+      height: 28px;
+    }
+
+    .close-btn:hover {
+      background: rgba(255, 32, 53, 0.15);
+      color: var(--red);
+    }
+
+    .volume-container {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      color: var(--muted);
+      width: 100%;
+      background: rgba(255, 255, 255, 0.02);
+      padding: 0.75rem 1rem;
+      border-radius: 4px;
+      margin-top: 0.5rem;
+    }
+
+    .vol-icon {
+      opacity: 0.7;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .vol-icon:hover {
+      opacity: 1;
+    }
+
+    .vol-slider-wrap {
+      flex: 1;
+      position: relative;
+      height: 4px;
+      display: flex;
+      align-items: center;
+    }
+
+    .volume-slider {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 4px;
+      background: transparent;
+      outline: none;
+      cursor: none !important;
+      position: absolute;
+      z-index: 2;
+      margin: 0;
+    }
+
+    .volume-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 12px;
+      height: 12px;
+      background: #fff;
+      border-radius: 50%;
+      transition: background 0.2s, transform 0.2s;
+      cursor: none !important;
+      opacity: 0;
+    }
+
+    .volume-container:hover .volume-slider::-webkit-slider-thumb {
+      opacity: 1;
+    }
+
+    .vol-fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 2px;
+      pointer-events: none;
+      z-index: 1;
+      transition: background 0.3s;
+    }
+
+    .volume-container:hover .vol-fill {
+      background: var(--red);
+    }
+
+    /* VISUALIZER */
+    .music-visualizer {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 16px;
+      pointer-events: none;
+    }
+
+    .vis-bar {
+      width: 4px;
+      height: 4px;
+      background: var(--red);
+      transition: height 0.2s ease;
+      border-radius: 1px;
+    }
+
+    .music-player.playing .vis-bar {
+      animation: vis-bounce 0.5s infinite alternate ease-in-out;
+    }
+
+    .music-player.playing .vis-bar:nth-child(1) {
+      animation-delay: 0s;
+    }
+
+    .music-player.playing .vis-bar:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .music-player.playing .vis-bar:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes vis-bounce {
+      0% {
+        height: 4px;
+      }
+
+      100% {
+        height: 16px;
+      }
+    }
+
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      letter-spacing: 0.12em;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-logo span {
+      color: var(--red);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .nav-cta {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--red);
+      border: none;
+      padding: 0.5rem 1.25rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+
+    .nav-cta:hover {
+      opacity: 0.85;
+    }
+
+    /* -- HERO -- */
+    #hero {
+      min-height: 1440px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 3rem 10rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg-text {
+      position: absolute;
+      top: 35%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: var(--font-display);
+      font-size: 340px;
+      letter-spacing: -0.02em;
+      color: rgba(255, 255, 255, 0.018);
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
+      line-height: 1;
+    }
+
+    .hero-tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .hero-tag::before {
+      content: '';
+      display: inline-block;
+      width: 28px;
+      height: 1px;
+      background: var(--red);
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: 160px;
+      line-height: 0.92;
+      letter-spacing: 0.02em;
+      margin-bottom: 2rem;
+    }
+
+    .hero-title .line2 {
+      color: var(--red);
+    }
+
+    .hero-title .line3 {
+      -webkit-text-stroke: 1.5px var(--text);
+      color: transparent;
+    }
+
+    .hero-bottom {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-top: 3rem;
+    }
+
+    .hero-desc {
+      max-width: 500px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.8;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 3rem;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 2.8rem;
+      line-height: 1;
+      color: var(--text);
+    }
+
+    .stat-label {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.25rem;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 48px;
+      background: linear-gradient(to bottom, var(--red), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollPulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scaleY(1);
+      }
+
+      50% {
+        opacity: 0.4;
+        transform: scaleY(0.6);
+      }
+    }
+
+    /* -- GRID LINES -- */
+    .grid-lines {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .grid-lines::before,
+    .grid-lines::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: var(--border);
+    }
+
+    .grid-lines::before {
+      left: 25%;
+    }
+
+    .grid-lines::after {
+      left: 75%;
+    }
+
+    /* -- SECTION BASE -- */
+    section {
+      padding: 7rem 3rem;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 4rem;
+    }
+
+    .section-num {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--red);
+      letter-spacing: 0.1em;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 72px;
+      letter-spacing: 0.05em;
+      line-height: 1;
+    }
+
+    .section-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+      margin-left: 1rem;
+    }
+
+    /* -- ABOUT -- */
+    #about {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 0.6fr 1.4fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .about-portrait {
+      position: relative;
+    }
+
+    .portrait-frame {
+      width: 100%;
+      aspect-ratio: 15/19;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .portrait-placeholder {
+      font-family: var(--font-display);
+      font-size: 8rem;
+      color: rgba(255, 255, 255, 0.04);
+      letter-spacing: 0.05em;
+    }
+
+    .portrait-accent {
+      position: absolute;
+      bottom: -2px;
+      left: -2px;
+      width: 60%;
+      height: 4px;
+      background: var(--red);
+    }
+
+    .portrait-tag {
+      position: absolute;
+      top: 1.5rem;
+      right: -1.5rem;
+      background: var(--red);
+      color: var(--bg);
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 1.2rem 0.75rem;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+    }
+
+    .about-content {
+      padding-top: 1rem;
+    }
+
+    .about-intro {
+      font-family: var(--font-display);
+      font-size: 42px;
+      line-height: 1.15;
+      margin-bottom: 2rem;
+      letter-spacing: 0.03em;
+    }
+
+    .about-intro em {
+      font-style: normal;
+      color: var(--red);
+    }
+
+    .about-body {
+      color: rgba(232, 226, 217, 0.65);
+      font-size: 0.9rem;
+      line-height: 1.9;
+      margin-bottom: 2.5rem;
+      font-family: var(--font-mono);
+    }
+
+    .about-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .tag {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 0.35rem 0.75rem;
+      transition: all 0.2s;
+    }
+
+    .tag:hover {
+      color: var(--cyan);
+      border-color: var(--cyan);
+    }
+
+    /* -- SKILLS -- */
+    #skills {
+      background: var(--bg);
+      min-height: 1440px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .skills-container {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .skills-categories {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      position: sticky;
+      top: 100px;
+    }
+
+    .skill-cat-btn {
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      text-align: left;
+      padding: 1rem;
+      cursor: pointer;
+      border-left: 2px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    .skill-cat-btn:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .skill-cat-btn.active {
+      color: var(--red);
+      border-left-color: var(--red);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .skills-grid-wrapper {
+      height: 910px;
+      overflow-y: auto;
+      padding-right: 1rem;
+    }
+
+    .skills-grid-wrapper::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .skills-grid-wrapper::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .skills-grid-wrapper::-webkit-scrollbar-thumb {
+      background: var(--red);
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .skill-card {
+      background: var(--bg);
+      padding: 2rem 1.75rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+
+    .skill-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--red);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.35s ease;
+    }
+
+    .skill-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .skill-card:hover {
+      background: var(--bg2);
+    }
+
+    .skill-icon {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      display: block;
+      opacity: 0.7;
+    }
+
+    .skill-name {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.5rem;
+    }
+
+    .skill-desc {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 1.25rem;
+    }
+
+    .skill-bar-bg {
+      height: 2px;
+      background: rgba(255, 255, 255, 0.06);
+      position: relative;
+    }
+
+    .skill-bar-fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      background: var(--red);
+      transition: width 1s ease;
+    }
+
+    .skill-level {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      color: var(--red);
+      text-align: right;
+      margin-top: 0.4rem;
+      letter-spacing: 0.1em;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease;
+      display: block;
+      height: 1rem;
+      line-height: 1rem;
+      transform-origin: top right;
+      backface-visibility: hidden;
+      transform: translateZ(0);
+      -webkit-font-smoothing: subpixel-antialiased;
+    }
+
+    .skill-card:hover .skill-level {
+      transform: scale(1.3) translateZ(0);
+      color: #FFF;
+    }
+
+    /* -- PROJECTS -- */
+    #projects {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      padding-bottom: 15rem;
+      overflow-anchor: none;
+    }
+
+    .project-filters {
+      margin-bottom: 2rem;
+    }
+
+    .proj-tabs {
+      display: flex;
+      gap: 2rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1.5rem;
+    }
+
+    .proj-tab {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      letter-spacing: 0.05em;
+      padding-bottom: 1rem;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .proj-tab.active {
+      color: var(--text);
+    }
+
+    .proj-tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--red);
+    }
+
+    .proj-tags {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .proj-tag {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .proj-tag.active,
+    .proj-tag:hover {
+      background: var(--red);
+      color: var(--bg);
+      border-color: var(--red);
+    }
+
+    .projects-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      height: 500px;
+      overflow-y: auto;
+      padding-right: 1rem;
+      overflow-anchor: none;
+    }
+
+    .no-projects-msg {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      text-align: center;
+      font-family: var(--font-mono);
+      color: var(--muted);
+      font-size: 1.1rem;
+      letter-spacing: 0.05em;
+      padding: 2rem;
+      box-sizing: border-box;
+      border: 1px dashed var(--border);
+      background: transparent;
+    }
+
+    .projects-list::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .projects-list::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .projects-list::-webkit-scrollbar-thumb {
+      background: var(--red);
+    }
+
+    .project-display {
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 3rem;
+      margin-bottom: 4rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 2rem;
+      align-items: start;
+      min-height: 480px;
+      overflow-anchor: none;
+    }
+
+    .proj-disp-left {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .proj-disp-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--red);
+      letter-spacing: 0.1em;
+    }
+
+    .proj-disp-index {
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    .proj-disp-title {
+      font-family: var(--font-display);
+      font-size: 56px;
+      line-height: 1;
+      letter-spacing: 0.04em;
+    }
+
+    .proj-disp-specs {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      border-left: 2px solid var(--red);
+      padding-left: 1rem;
+    }
+
+    .spec-item {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .spec-label {
+      color: var(--muted);
+      min-width: 70px;
+    }
+
+    .proj-disp-desc {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    .proj-disp-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .proj-disp-right {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      height: 100%;
+    }
+
+    .proj-gallery-main {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #000;
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .proj-main-media {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .proj-gallery-thumbs {
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+    }
+
+    .proj-gallery-thumbs::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    .proj-gallery-thumbs::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .proj-gallery-thumbs::-webkit-scrollbar-thumb {
+      background: var(--red);
+    }
+
+    .proj-thumb-item {
+      height: 60px;
+      aspect-ratio: 16/9;
+      background: #111;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      opacity: 0.5;
+      transition: opacity 0.2s, border-color 0.2s;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .proj-thumb-item:hover,
+    .proj-thumb-item.active {
+      opacity: 1;
+      border-color: var(--red);
+    }
+
+    .proj-disp-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .proj-link-btn {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--bg);
+      background: var(--text);
+      padding: 0.5rem 1rem;
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      transition: background 0.2s, transform 0.2s;
+      font-weight: bold;
+    }
+
+    .proj-link-btn:hover {
+      background: var(--red);
+      transform: translateY(-2px);
+    }
+
+    .proj-fullscreen-btn {
+      position: absolute;
+      bottom: 1rem;
+      right: 1rem;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 1.5rem;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .proj-fullscreen-btn:hover {
+      background: var(--red);
+      color: var(--bg);
+    }
+
+    .project-row {
+      display: grid;
+      grid-template-columns: 60px 1fr auto auto;
+      align-items: center;
+      gap: 3rem;
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid var(--border);
+      border-left: 4px solid transparent;
+      text-decoration: none;
+      color: inherit;
+      transition: padding-left 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+      cursor: pointer;
+    }
+
+    .project-row:hover,
+    .project-row.active {
+      padding-left: 3rem;
+      padding-right: 2rem;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .project-row.active {
+      border-left: 4px solid var(--red);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .project-row:hover .project-num,
+    .project-row.active .project-num {
+      color: var(--red);
+    }
+
+    .project-row:hover .proj-arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .project-num {
+      font-family: var(--font-mono);
+      font-size: 1rem;
+      font-weight: bold;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+
+    .project-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .project-title {
+      font-family: var(--font-display);
+      font-size: 32px;
+      letter-spacing: 0.04em;
+    }
+
+    .project-meta {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .project-genre {
+      color: var(--cyan);
+    }
+
+    .project-engine {
+      color: var(--red);
+    }
+
+    .project-platform {
+      color: var(--muted);
+    }
+
+    .project-thumb-small {
+      width: 120px;
+      height: 68px;
+      background: #111;
+      border: 1px solid var(--border);
+      object-fit: cover;
+    }
+
+    .proj-arrow {
+      font-size: 1.5rem;
+      color: var(--red);
+      opacity: 0;
+      transform: translateX(-12px);
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+      font-family: var(--font-mono);
+    }
+
+    /* -- CONTACT -- */
+    #contact {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+    }
+
+    .contact-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: start;
+    }
+
+    .contact-heading {
+      font-family: var(--font-display);
+      font-size: 110px;
+      line-height: 0.9;
+      letter-spacing: 0.03em;
+      margin-bottom: 2rem;
+    }
+
+    .contact-heading .outline {
+      -webkit-text-stroke: 1.5px var(--text);
+      color: transparent;
+    }
+
+    .contact-sub {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+      line-height: 1.9;
+      margin-bottom: 3rem;
+      max-width: 550px;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.1rem 0;
+      border-bottom: 1px solid var(--border);
+      text-decoration: none;
+      color: var(--text);
+      transition: padding-left 0.25s;
+    }
+
+    .contact-link:hover {
+      padding-left: 0.75rem;
+    }
+
+    .contact-link-label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .contact-link-val {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .contact-link-arrow {
+      color: var(--red);
+      font-size: 0.9rem;
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .form-row {
+      border-bottom: 1px solid var(--border);
+      padding: 0;
+      position: relative;
+    }
+
+    .form-row:first-child {
+      border-top: 1px solid var(--border);
+    }
+
+    .form-label {
+      font-family: var(--font-mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: block;
+      padding: 0.9rem 0 0;
+    }
+
+    .form-input,
+    .form-textarea {
+      width: 100%;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 500;
+      padding: 0.4rem 0 0.9rem;
+      resize: none;
+    }
+
+    .form-textarea::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .form-textarea::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .form-textarea::-webkit-scrollbar-thumb {
+      background: var(--red);
+    }
+
+    .form-input::placeholder,
+    .form-textarea::placeholder {
+      color: rgba(255, 255, 255, 0.12);
+    }
+
+    .form-submit {
+      margin-top: 2rem;
+      background: var(--red);
+      color: var(--bg);
+      border: none;
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      letter-spacing: 0.12em;
+      padding: 1rem 2.5rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .form-submit:hover {
+      opacity: 0.88;
+      transform: translateY(-2px);
+    }
+
+    /* -- FOOTER -- */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg);
+    }
+
+    .footer-logo {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+    }
+
+    .footer-logo span {
+      color: var(--red);
+    }
+
+    .footer-copy {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      color: rgba(255, 255, 255, 0.2);
+      letter-spacing: 0.1em;
+    }
+
+    /* -- SCRAMBLE TEXT EFFECT -- */
+    .scramble-text {
+      display: inline-block;
+      transition: text-shadow 0.1s ease, background-color 0.1s ease;
+    }
+
+    .scramble-text:hover {
+      background-color: rgba(255, 32, 53, 0.0);
+      text-shadow: 3px 0px 0px rgba(0, 240, 255, 0.5), -3px 0px 0px rgba(255, 32, 53, 0.5);
+    }
+
+    /* -- RED CURSOR DOT -- */
+    * {
+      cursor: none !important;
+    }
+
+    body.show-native-cursor,
+    body.show-native-cursor * {
+      cursor: auto !important;
+    }
+
+    .cursor {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      background: var(--red);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 999999;
+      transition: transform 0.15s ease;
+      mix-blend-mode: difference;
+    }
+
+    /* -- SCANLINE HERO -- */
+    .scanlines {
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(to bottom,
+          transparent 0px,
+          transparent 3px,
+          rgba(0, 0, 0, 0.12) 3px,
+          rgba(0, 0, 0, 0.12) 4px);
+      pointer-events: none;
+      opacity: 0.4;
+    }
+
+    /* -- RED ACCENT LINE -- */
+    .accent-x {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 3rem;
+    }
+
+    .accent-x-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .accent-x-mark {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      color: var(--red);
+      letter-spacing: 0.2em;
+    }
+
+    /* -- ANIMATIONS -- */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero-tag {
+      animation: fadeUp 0.6s ease both;
+      animation-delay: 0.1s;
+    }
+
+    .hero-title {
+      animation: fadeUp 0.7s ease both;
+      animation-delay: 0.25s;
+    }
+
+    .hero-bottom {
+      animation: fadeUp 0.7s ease both;
+      animation-delay: 0.45s;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="cursor" id="cursor"></div>
+  <div id="app-viewport">
+
+    <div id="preloader">
+      <div class="grid-lines"></div>
+      <div class="scanlines"></div>
+      <div class="preloader-terminal" id="term-box"></div>
+      <div class="spinner">
+        <div class="spinner-ring"></div>
+        <div class="spinner-dot"></div>
+      </div>
+      <div class="preloader-text"><span id="preloader-msg">INITIALIZING ENGINE...</span> <span
+          id="preloader-pct">0</span><span style="color:var(--red);">%</span></div>
+      <div class="preloader-bar">
+        <div class="preloader-fill"></div>
+      </div>
+      <div
+        style="margin-top: 1.5rem; font-family: var(--font-body); font-size: 0.85rem; color: var(--muted); letter-spacing: 0.05em;">
+        SYSTEM RECOMMENDATION: Press <span style="color: #FFF; font-weight: 600;">[F11]</span> to initialize full screen
+        mode.
+      </div>
+    </div>
+
+
+
+    <div id="scroll-container">
+      <!-- NAV -->
+      <nav>
+        <a href="#hero" class="nav-logo">HARSHAL<span>_</span>GORE</a>
+        <ul class="nav-links">
+          <li><a href="#about">About</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#projects">Projects</a></li>
+        </ul>
+        <a href="#contact" class="nav-cta">Contact Me →</a>
+      </nav>
+
+      <!-- HERO -->
+      <section id="hero">
+        <div class="grid-lines"></div>
+        <div class="scanlines"></div>
+        <div class="hero-bg-text" id="hero-bg-text">GAME DEV</div>
+
+        <div class="hero-tag">Available for work - Game Developer - Indie Studio</div>
+
+        <h1 class="hero-title">
+          <div class="line1 scramble-text">CODE</div>
+          <div class="line2 scramble-text">BUILD</div>
+          <div class="line3 scramble-text">PLAY</div>
+        </h1>
+
+        <div class="hero-bottom">
+          <p class="hero-desc">
+            Building immersive games from the first line of code to the final render. I bridge the gap between complex
+            programming and compelling visual design to create a polished product, turning raw logic into experiences
+            players can't put down.
+          </p>
+
+          <div class="hero-stats">
+            <div class="stat-item">
+              <div class="stat-num">16+</div>
+              <div class="stat-label">Shipped Projects</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-num">7+</div>
+              <div class="stat-label">Years Exp</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-num">1M+</div>
+              <div class="stat-label">Lines of Code</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="scroll-hint">
+          <div class="scroll-line"></div>
+          Scroll
+        </div>
+      </section>
+
+      <!-- ABOUT -->
+      <section id="about">
+        <div class="section-header">
+          <span class="section-num">01 /</span>
+          <h2 class="section-title">ABOUT</h2>
+          <div class="section-line"></div>
+        </div>
+
+        <div class="about-grid">
+          <div class="about-portrait">
+            <div class="portrait-frame">
+              <div class="portrait-placeholder">[ ME ]</div>
+              <div class="portrait-accent"></div>
+            </div>
+            <div class="portrait-tag">Game Developer</div>
+          </div>
+
+          <div class="about-content">
+            <h3 class="about-intro">
+              I turn ambitious game concepts into<br>
+              <em>polished</em> &amp; <em>playable realities.</em>
+            </h3>
+
+            <p class="about-body">
+              Hey, I'm Harshal Gore. The Game Developer, with around 7+ years of experience turning ambitious concepts
+              into
+              highly polished realities. I grew up playing every games that I could get my hands on, which gave me a
+              sharp
+              instinct for the game mechanics, core features and intuitive design.
+              Whether I'm building scalable architecture for a massive open-world, prototyping a stylized indie hit, or
+              optimizing performance for mobile, my goal is always the same - creating seamless, engaging experiences
+              from
+              the first line of code to the final ship.<br><br>
+
+              I am currently working as a Senior Game Developer at Virtualize Technologies Pvt Ldt, navigating deep
+              technical challenges in both Unity and Unreal Engine.
+              Beyond writing code, I'm deeply invested in the human side of game development - sharing knowledge,
+              guiding
+              junior developers, and helping shape our team's technical culture to ensure we are always building smarter
+              and
+              faster.
+            </p>
+
+            <div class="about-tags">
+              <span class="tag">C#</span>
+              <span class="tag">C++</span>
+              <span class="tag">JavaScript</span>
+              <span class="tag">TypeScript</span>
+              <span class="tag">Java</span>
+              <span class="tag">HTML5</span>
+              <span class="tag">CSS</span>
+
+              <span class="tag">Unity 3D/2D</span>
+              <span class="tag">Unreal Engine 4/5</span>
+              <span class="tag">Construct 2/3</span>
+              <span class="tag">Godot</span>
+              <span class="tag">Cocos Creator</span>
+              <span class="tag">Game Maker</span>
+              <span class="tag">Android Studio</span>
+
+              <span class="tag">Game Design</span>
+              <span class="tag">Level Design</span>
+              <span class="tag">Systems Architecture</span>
+              <span class="tag">Prototyping</span>
+              <span class="tag">Grid-Based Mechanics</span>
+              <span class="tag">Data-Driven Design</span>
+              <span class="tag">Cross-Platform (iOS/Android/PC/Console)</span>
+
+              <span class="tag">Smart AI & Bots</span>
+              <span class="tag">Behavior Trees</span>
+              <span class="tag">Finite State Machines (FSM)</span>
+              <span class="tag">NavMesh / Pathfinding</span>
+              <span class="tag">DOTS / ECS</span>
+
+              <span class="tag">Local / Couch Multiplayer</span>
+              <span class="tag">Online Multiplayer</span>
+              <span class="tag">Photon (PUN / Fusion)</span>
+              <span class="tag">Netcode for GameObjects</span>
+
+              <span class="tag">URP / HDRP</span>
+              <span class="tag">Custom Shaders</span>
+              <span class="tag">HLSL / GLSL</span>
+              <span class="tag">Shader Graph</span>
+              <span class="tag">Stylized / Toon Rendering</span>
+              <span class="tag">Procedural Generation</span>
+              <span class="tag">Asynchronous Mesh Generation</span>
+              <span class="tag">Performance Optimization</span>
+
+              <span class="tag">Character Animation</span>
+              <span class="tag">Rigging & Skinning</span>
+              <span class="tag">Procedural Animation</span>
+              <span class="tag">Niagara VFX</span>
+              <span class="tag">Particle Systems</span>
+              <span class="tag">Lumen / Nanite</span>
+
+              <span class="tag">ScriptableObjects</span>
+              <span class="tag">Addressables</span>
+              <span class="tag">Object Pooling</span>
+              <span class="tag">Gameplay Ability System (GAS)</span>
+              <span class="tag">Save Data / Serialization</span>
+              <span class="tag">Profiling & Debugging</span>
+
+              <span class="tag">Cross-Platform Input</span>
+              <span class="tag">Enhanced Input (Unreal)</span>
+              <span class="tag">New Input System (Unity)</span>
+              <span class="tag">Gamepad / Controller Support</span>
+              <span class="tag">Touch & Gesture Controls</span>
+
+              <span class="tag">Firebase</span>
+              <span class="tag">REST API's</span>
+              <span class="tag">Google AdSense</span>
+              <span class="tag">In-App Purchases (IAP)</span>
+
+              <span class="tag">UI/UX Implementation</span>
+              <span class="tag">Audio Integration (FMOD/Wwise)</span>
+              <span class="tag">Fluid Camera Transitions</span>
+
+              <span class="tag">Blender</span>
+              <span class="tag">Adobe Photoshop</span>
+              <span class="tag">Adobe Illustrator</span>
+              <span class="tag">Adobe Premiere Pro</span>
+              <span class="tag">Adobe XD</span>
+              <span class="tag">Figma</span>
+              <span class="tag">Marvelous Designer</span>
+              <span class="tag">Substance Painter</span>
+              <span class="tag">Maya</span>
+
+              <span class="tag">Git</span>
+              <span class="tag">Jira</span>
+
+              <span class="tag">Sketching</span>
+              <span class="tag">Digital Illustration</span>
+              <span class="tag">Content Creation</span>
+            </div>
+          </div>
+      </section>
+
+      <!-- SKILLS -->
+      <section id="skills">
+        <div class="section-header">
+          <span class="section-num">02 /</span>
+          <h2 class="section-title">SKILLS</h2>
+          <div class="section-line"></div>
+        </div>
+
+        <div class="skills-container">
+          <div class="skills-categories">
+            <button class="skill-cat-btn active" data-cat="all">All Skills</button>
+            <button class="skill-cat-btn" data-cat="engine">Game Engines & IDE's</button>
+            <button class="skill-cat-btn" data-cat="prog">Programming Languages</button>
+            <button class="skill-cat-btn" data-cat="art">Art & Design</button>
+            <button class="skill-cat-btn" data-cat="tech">Technical Systems</button>
+          </div>
+
+          <div class="skills-grid-wrapper">
+            <div class="skills-grid">
+              <div class="skill-card" data-cat="prog" data-percent="92">
+                <span class="skill-icon">#️⃣</span>
+                <div class="skill-name">C#</div>
+                <p class="skill-desc">The backbone of Unity development. Mastering DOTS, ECS, custom editors, and highly
+                  scalable object-oriented architectures.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="prog" data-percent="78">
+                <span class="skill-icon">➕</span>
+                <div class="skill-name">C++</div>
+                <p class="skill-desc">Native performance coding for Unreal Engine. Proficient in manual memory
+                  management, raw pointers, and complex gameplay frameworks.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="prog" data-percent="65">
+                <span class="skill-icon">🟨</span>
+                <div class="skill-name">JAVASCRIPT</div>
+                <p class="skill-desc">Web-based logic, Node.js backends, and tooling. Writing clean code for
+                  cross-platform integrations and WebGL frameworks.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="prog" data-percent="79">
+                <span class="skill-icon">🟦</span>
+                <div class="skill-name">TYPESCRIPT</div>
+                <p class="skill-desc">Strictly typed web logic for scalable web apps, robust backend systems, and
+                  maintaining clean, error-free codebases.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="prog" data-percent="82">
+                <span class="skill-icon">🌐</span>
+                <div class="skill-name">HTML5</div>
+                <p class="skill-desc">Structuring responsive web layers and complex UI overlays for browser-based games
+                  and interactive digital experiences.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="prog" data-percent="76">
+                <span class="skill-icon">🎨</span>
+                <div class="skill-name">CSS</div>
+                <p class="skill-desc">Crafting highly optimized, responsive styling and smooth animations for web
+                  applications and digital portfolios.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="prog" data-percent="59">
+                <span class="skill-icon">☕</span>
+                <div class="skill-name">JAVA</div>
+                <p class="skill-desc">Server-side matchmaking and mobile logic. Solid grasp of Android-specific
+                  architecture, JNI integrations, and profiling.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="prog" data-percent="94">
+                <span class="skill-icon">🔀</span>
+                <div class="skill-name">GIT</div>
+                <p class="skill-desc">Version control mastery. Handling complex branching, merge conflict resolution,
+                  and automated CI/CD pipelines.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="engine" data-percent="94">
+                <span class="skill-icon">⬛</span>
+                <div class="skill-name">UNITY ENGINE</div>
+                <p class="skill-desc">Complete pipeline mastery in 3D & 2D. Utilizing ScriptableObjects, custom tools,
+                  URP/HDRP, and heavy CPU/GPU profiling.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="engine" data-percent="83">
+                <span class="skill-icon">🆄</span>
+                <div class="skill-name">UNREAL ENGINE</div>
+                <p class="skill-desc">Experience with Lumen, Nanite, and Chaos physics. Building optimized Blueprint
+                  logic intertwined with native C++.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="engine" data-percent="76">
+                <span class="skill-icon">⚙️</span>
+                <div class="skill-name">CONSTRUCT 2 / 3</div>
+                <p class="skill-desc">Rapid 2D prototyping and HTML5 game development. Deep understanding of event-sheet
+                  logic and rigid body behaviors.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="engine" data-percent="65">
+                <span class="skill-icon">🤖</span>
+                <div class="skill-name">GODOT</div>
+                <p class="skill-desc">Open-source engine workflows. Leveraging the Node-based architecture and GDScript
+                  for lightweight game deployment.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="engine" data-percent="78">
+                <span class="skill-icon">🌴</span>
+                <div class="skill-name">COCOS CREATOR</div>
+                <p class="skill-desc">Experience in alternative 2D game frameworks for specific mobile platform targets
+                  and specialized project needs.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="engine" data-percent="83">
+                <span class="skill-icon">🔨</span>
+                <div class="skill-name">GAME MAKER</div>
+                <p class="skill-desc">Strong foundational knowledge in 2D engine workflows, sprite management, and
+                  room-based level logic.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="engine" data-percent="55">
+                <span class="skill-icon">📱</span>
+                <div class="skill-name">ANDROID STUDIO</div>
+                <p class="skill-desc">Deep mobile optimization. Integrating ad networks, SDKs, native Android debugging,
+                  and strict APK/AAB size limits.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="art" data-percent="75">
+                <span class="skill-icon">🧊</span>
+                <div class="skill-name">BLENDER</div>
+                <p class="skill-desc">Organic and hard-surface 3D modeling. Specializing in retopology, efficient UV
+                  unwrapping, and game-ready meshes.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="art" data-percent="60">
+                <span class="skill-icon">〽️</span>
+                <div class="skill-name">MAYA</div>
+                <p class="skill-desc">Industry-standard 3D pipelines. Managing complex rigs, skinning, and exporting
+                  clean animation data to game engines.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="art" data-percent="90">
+                <span class="skill-icon">🖼️</span>
+                <div class="skill-name">ADOBE PHOTOSHOP</div>
+                <p class="skill-desc">Raster asset creation. Designing highly-readable UI sprites, seamless tiling
+                  textures, and striking concept art.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="art" data-percent="88">
+                <span class="skill-icon">✒️</span>
+                <div class="skill-name">ADOBE ILLUSTRATOR</div>
+                <p class="skill-desc">Vector illustration for scalable assets. Crafting clean logos, iconography, and
+                  distinct, stylized aesthetic elements.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="art" data-percent="87">
+                <span class="skill-icon">🎬</span>
+                <div class="skill-name">ADOBE PREMIERE PRO</div>
+                <p class="skill-desc">High-impact cinematic editing. Producing engaging game trailers, content creation,
+                  and slick promotional sequences.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="art" data-percent="57">
+                <span class="skill-icon">✨</span>
+                <div class="skill-name">AFTER EFFECTS</div>
+                <p class="skill-desc">Advanced motion graphics and post-production. Elevating trailers with dynamic text
+                  and custom VFX overlays.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="art" data-percent="86">
+                <span class="skill-icon">📐</span>
+                <div class="skill-name">FIGMA</div>
+                <p class="skill-desc">Collaborative UI/UX wireframing. Building intuitive player interfaces, HUDs, and
+                  seamless menu flows.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="art" data-percent="74">
+                <span class="skill-icon">📱</span>
+                <div class="skill-name">ADOBE XD</div>
+                <p class="skill-desc">Rapid interface prototyping and interactive design documentation for game menus
+                  and application structures.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="art" data-percent="54">
+                <span class="skill-icon">👗</span>
+                <div class="skill-name">MARVELOUS DESIGNER</div>
+                <p class="skill-desc">Advanced 3D cloth simulation. Designing realistic garments and dynamic fabric
+                  physics for character assets.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="art" data-percent="52">
+                <span class="skill-icon">🖌️</span>
+                <div class="skill-name">SUBSTANCE PAINTER</div>
+                <p class="skill-desc">Creating photorealistic materials. Baking high-poly details to low-poly maps for
+                  AAA-quality PBR workflows.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="art" data-percent="53">
+                <span class="skill-icon">💻</span>
+                <div class="skill-name">ADOBE DREAMWEAVER</div>
+                <p class="skill-desc">Web design and HTML editing toolkit for managing site structures, managing code,
+                  and visual interface rendering.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="tech" data-percent="88">
+                <span class="skill-icon">🎮</span>
+                <div class="skill-name">GAME & LEVEL DESIGN</div>
+                <p class="skill-desc">Core loop prototyping, precise spatial logic, pacing analysis, and designing
+                  player-driven affordances.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="tech" data-percent="82">
+                <span class="skill-icon">🌟</span>
+                <div class="skill-name">TECH ART & SHADERS</div>
+                <p class="skill-desc">Writing custom HLSL/GLSL. Utilizing Shader Graphs for post-processing effects,
+                  unlit aesthetics, and VFX.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="tech" data-percent="87">
+                <span class="skill-icon">🧠</span>
+                <div class="skill-name">AI & SMART LOGIC</div>
+                <p class="skill-desc">Building responsive, intelligent enemy agents utilizing Behavior Trees, finite
+                  state machines, and dynamic NavMesh.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="tech" data-percent="72">
+                <span class="skill-icon">🌐</span>
+                <div class="skill-name">MULTIPLAYER SYSTEMS</div>
+                <p class="skill-desc">Architecting robust online and local couch-coop mechanics. Managing client-server
+                  synchronization and Photon.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="tech" data-percent="89">
+                <span class="skill-icon">🕹️</span>
+                <div class="skill-name">CROSS-PLATFORM INPUT</div>
+                <p class="skill-desc">Architecting responsive control schemes. Mastering Unreal's Enhanced Input,
+                  Unity's New Input System, and touch.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="tech" data-percent="84">
+                <span class="skill-icon">☁️</span>
+                <div class="skill-name">BACKEND & APIS</div>
+                <p class="skill-desc">Integrating Firebase, REST APIs, and cloud databases for secure player
+                  authentication, cloud saves, and scalable live-ops ecosystems.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="tech" data-percent="83">
+                <span class="skill-icon">💰</span>
+                <div class="skill-name">MONETIZATION & IAP</div>
+                <p class="skill-desc">Implementing In-App Purchases, Google AdSense, and real-money gaming SDKs to build
+                  sustainable, balanced game economies.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROJECTS -->
+      <section id="projects">
+        <div class="section-header">
+          <span class="section-num">03 /</span>
+          <h2 class="section-title">PROJECTS</h2>
+          <div class="section-line"></div>
+        </div>
+
+        <!-- Project Display -->
+        <div class="project-display" id="project-display">
+          <div class="proj-disp-left">
+            <div class="proj-disp-meta">
+              <span class="proj-disp-index">00</span>
+              <span class="proj-disp-date">2024 - 2025</span>
+            </div>
+            <h3 class="proj-disp-title scramble-text">PROJECT NAME</h3>
+
+            <div class="proj-disp-specs">
+              <div class="spec-item"><span class="spec-label">Genre:</span> <span class="proj-disp-genre">Action
+                  RPG</span>
+              </div>
+              <div class="spec-item"><span class="spec-label">Engine:</span> <span class="proj-disp-engine">Unreal
+                  Engine
+                  5</span></div>
+              <div class="spec-item"><span class="spec-label">Platform:</span> <span class="proj-disp-platform">PC /
+                  Steam</span></div>
+            </div>
+
+            <p class="proj-disp-desc">
+              Description goes here...
+            </p>
+
+            <div class="proj-disp-tags">
+              <!-- populated via JS -->
+            </div>
+
+            <div class="proj-disp-links">
+              <!-- populated via JS -->
+            </div>
+          </div>
+
+          <div class="proj-disp-right">
+            <div class="proj-gallery-main">
+              <video class="proj-main-media" id="proj-main-video" loop muted playsinline controls
+                style="display:none;"></video>
+              <iframe class="proj-main-media" id="proj-main-youtube" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen
+                style="display:none; pointer-events: auto;"></iframe>
+              <img class="proj-main-media" id="proj-main-img" src="" alt="Project Visual" style="display:none;">
+              <button id="fullscreen-btn" class="proj-fullscreen-btn" title="Toggle Fullscreen">⛶</button>
+            </div>
+            <div class="proj-gallery-thumbs" id="proj-gallery-thumbs">
+              <!-- Populated via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Project Filters -->
+        <div class="project-filters">
+          <div class="proj-tabs">
+            <button class="proj-tab active" data-type="launched">PROFESSIONAL PROJECTS</button>
+            <button class="proj-tab" data-type="learning">LEARNING / JAMS</button>
+          </div>
+          <div class="proj-tags">
+            <button class="proj-tag active" data-engine="all">All Engines</button>
+            <button class="proj-tag" data-engine="unity">Unity</button>
+            <button class="proj-tag" data-engine="unreal">Unreal</button>
+            <button class="proj-tag" data-engine="construct">Construct 2</button>
+          </div>
+        </div>
+
+        <!-- Project List -->
+        <div class="projects-list">
+
+          <div class="project-row" data-type="launched" data-engine="unity" data-index="00" data-title="ORIGINS OF LUME"
+            data-genre="STRATEGY / CCG" data-platform="PC / Mobile" data-date="2024-2025"
+            data-desc="Origins of Lume is a highly strategic turn-based collectible card game (CCG) where players construct powerful 30-card decks around unique summoners to dominate PvE and PvP battles. The core loop revolves around tactical synergy, elemental abilities, and precise stat management to defeat the opposing summoner and unlock meta-progression rewards.<br><br>Developed as a core team project, I spearheaded the UI implementation, deck management systems, and core gameplay functionalities. I architected the player database utilizing Firebase, built comprehensive debug menus, and designed the interactive tutorial workflow. Furthermore, I elevated the game's aesthetic by implementing custom shaders, particle systems, and dynamic animations. This project stands as a testament to my ability to deliver complex, data-driven systems wrapped in a highly polished user experience."
+            data-tags="Turn-Based Strategy,CCG,New Input System,URP,Firebase,Shaders,VFX,UI/UX"
+            data-links="Steam|https://store.steampowered.com/app/4050390/Origins_of_Lume/,Website|https://www.originsoflume.com/"
+            data-video="https://youtu.be/qjJ9dBrZlE8"
+            data-screens="assets/projects/Unity/OOL/o_1.webp,assets/projects/Unity/OOL/o_10.webp,assets/projects/Unity/OOL/o_2.webp,assets/projects/Unity/OOL/o_3.webp,assets/projects/Unity/OOL/o_4.webp,assets/projects/Unity/OOL/o_5.webp,assets/projects/Unity/OOL/o_6.webp,assets/projects/Unity/OOL/o_7.webp,assets/projects/Unity/OOL/o_8.webp,assets/projects/Unity/OOL/o_9.webp"
+            data-thumb="assets/projects/Unity/OOL/o_1.webp">
+            <span class="project-num">00</span>
+            <div class="project-info">
+              <span class="project-title">ORIGINS OF LUME</span>
+              <div class="project-meta">
+                <span class="project-genre">STRATEGY / CCG</span>
+                <span class="project-platform">UNITY</span>
+              </div>
+            </div>
+            <img src="assets/projects/Unity/OOL/o_1.webp" class="project-thumb-small" alt="Thumb">
+            <span class="proj-arrow">→</span>
+          </div>
+
+          <div class="project-row" data-type="launched" data-engine="unity" data-index="01"
+            data-title="TRUCK DRIVER: HEADING NORTH" data-genre="VEHICLE SIMULATION" data-platform="PC / Console"
+            data-date="2022-2023"
+            data-desc="Truck Driver: Heading North is a massive DLC expansion for the popular vehicle simulation game, introducing dynamic new environments, NPC mission structures, and deep vehicle modification systems. Players navigate a sprawling open map, completing contracts to build their transport empire.<br><br>Working closely with the core team, my primary mandate was executing the complex console porting from Windows to Xbox One and PS4. I navigated severe version-mismatch hurdles between the legacy base game and the new DLC by engineering robust optimization strategies. I overhauled the multi-scene streaming and culling logic to maintain strict console framerates, integrated cross-platform gamepad support, and implemented new mission mechanics. Successfully shipping this expansion solidified my expertise in performance profiling and cross-platform console deployment."
+            data-tags="Console Porting,URP,Cross-Platform Input,Optimization,Scene Streaming,Level Design"
+            data-links="Steam|https://store.steampowered.com/app/768180/Truck_Driver/,Publisher|https://www.soedesco.com/games/truck-driver-heading-north"
+            data-video="https://youtu.be/O2CXAuqOtk0"
+            data-screens="assets/projects/Unity/TruckD/td_1.webp,assets/projects/Unity/TruckD/td_2.webp,assets/projects/Unity/TruckD/td_3.webp,assets/projects/Unity/TruckD/td_4.webp,assets/projects/Unity/TruckD/td_5.webp,assets/projects/Unity/TruckD/td_6.webp"
+            data-thumb="assets/projects/Unity/TruckD/td_1.webp">
+            <span class="project-num">01</span>
+            <div class="project-info">
+              <span class="project-title">HEADING NORTH DLC</span>
+              <div class="project-meta">
+                <span class="project-genre">SIMULATION</span>
+                <span class="project-platform">UNITY</span>
+              </div>
+            </div>
+            <img src="assets/projects/Unity/TruckD/td_1.webp" class="project-thumb-small" alt="Thumb">
+            <span class="proj-arrow">→</span>
+          </div>
+
+          <div class="project-row" data-type="launched" data-engine="unreal" data-index="02"
+            data-title="ROGUELITE SURVIVAL" data-genre="ACTION ROGUELITE" data-platform="PC" data-date="2026"
+            data-desc="This high-octane Action Roguelite is a top-down survival shooter where players face relentless waves of enemies, relying on twitch reflexes and deep meta-progression. Each run demands strategic build-crafting through randomized skill drops, culminating in massive, screen-filling boss encounters.<br><br>Developed entirely solo in Unreal Engine as a flagship company showcase, I architected every facet of the game. From writing the core C++ logic for the ability systems and wave managers, to meticulously balancing the combat design and upgrade economy. I implemented dynamic Niagara VFX, integrated character animations, and built the persistent save system for meta-progression. This project highlights my capability to drive a game from raw concept to a highly polished, mechanically deep experience."
+            data-tags="C++,Blueprint,VFX,Game Design,Meta-Progression,Combat Systems,Balancing" data-links=""
+            data-video="https://youtu.be/kOyMbpGxHCE"
+            data-screens="assets/projects/Unreal/RogueL/r_1.webp,assets/projects/Unreal/RogueL/r_2.webp,assets/projects/Unreal/RogueL/r_3.webp,assets/projects/Unreal/RogueL/r_4.webp,assets/projects/Unreal/RogueL/r_5.webp,assets/projects/Unreal/RogueL/r_6.webp,assets/projects/Unreal/RogueL/r_7.webp,assets/projects/Unreal/RogueL/r_8.webp,assets/projects/Unreal/RogueL/r_9.webp"
+            data-thumb="assets/projects/Unreal/RogueL/r_1.webp">
+            <span class="project-num">02</span>
+            <div class="project-info">
+              <span class="project-title">ROGUELITE SURVIVAL</span>
+              <div class="project-meta">
+                <span class="project-genre">ACTION ROGUELITE</span>
+                <span class="project-platform">UNREAL</span>
+              </div>
+            </div>
+            <img src="assets/projects/Unreal/RogueL/r_1.webp" class="project-thumb-small" alt="Thumb">
+            <span class="proj-arrow">→</span>
+          </div>
+
+          <div class="project-row" data-type="launched" data-engine="unity" data-index="03" data-title="ITORAH"
+            data-genre="ACTION-PLATFORMER" data-platform="PC / Console" data-date="2023"
+            data-desc="Itorah is a visually breathtaking 2.5D action-platformer heavily inspired by classic Metroidvania design. Set in a lush, hand-painted world, players navigate intricate platforming challenges and intense boss fights as they unravel a compelling narrative.<br><br>As part of the technical team, I was responsible for the console porting pipeline, bringing the PC experience to Xbox One and PS4 flawlessly. My work focused heavily on hardware-specific optimization, resolving rendering bottlenecks, and adapting the UI and input systems for dynamic gamepad support. Shipping Itorah refined my ability to maintain pristine visual fidelity while adhering to strict console performance budgets."
+            data-tags="Console Porting,URP,Cross-Platform Input,Optimization,QA/Testing"
+            data-links="Steam|https://store.steampowered.com/app/1132910/ITORAH/"
+            data-video="https://youtu.be/IpoAtABYVuY"
+            data-screens="assets/projects/Unity/Itorah/i_1.webp,assets/projects/Unity/Itorah/i_2.webp,assets/projects/Unity/Itorah/i_3.webp,assets/projects/Unity/Itorah/i_4.webp,assets/projects/Unity/Itorah/i_5.webp,assets/projects/Unity/Itorah/i_6.webp"
+            data-thumb="assets/projects/Unity/Itorah/i_1.webp">
+            <span class="project-num">03</span>
+            <div class="project-info">
+              <span class="project-title">ITORAH</span>
+              <div class="project-meta">
+                <span class="project-genre">PLATFORMER</span>
+                <span class="project-platform">UNITY</span>
+              </div>
+            </div>
+            <img src="assets/projects/Unity/Itorah/i_1.webp" class="project-thumb-small" alt="Thumb">
+            <span class="proj-arrow">→</span>
+          </div>
+
+          <div class="project-row" data-type="learning" data-engine="unity" data-index="04" data-title="SPEED MANIAC"
+            data-genre="MULTIPLAYER RACING" data-platform="PC" data-date="2021"
+            data-desc="Speed Maniac is a stylized online multiplayer racing game built to deliver fast-paced, relaxing drift sessions with friends. Featuring robust car customization and varied stats, the game focuses on tight, arcade-style vehicle physics and competitive fun.<br><br>Created during a fast-paced college Game Jam, I stepped into the role of Project Manager while directly handling heavy technical development. I engineered the vehicle mechanics, implemented both the old and new Unity Input systems, and orchestrated the multiplayer networking. On the visual front, I utilized URP to craft striking post-processing, dynamic trails, and particle systems. It was a massive exercise in rapid prototyping, team leadership, and delivering a functional multiplayer loop under extreme time constraints."
+            data-tags="Online Multiplayer,Vehicle Physics,Post-Processing,Project Management,Game Jam" data-links=""
+            data-video="https://youtu.be/Jv6jWeIGz_0"
+            data-screens="assets/projects/Unity/SpeedManiac/sm_1.webp,assets/projects/Unity/SpeedManiac/sm_2.webp,assets/projects/Unity/SpeedManiac/sm_3.webp,assets/projects/Unity/SpeedManiac/sm_4.webp,assets/projects/Unity/SpeedManiac/sm_5.webp,assets/projects/Unity/SpeedManiac/sm_6.webp"
+            data-thumb="assets/projects/Unity/SpeedManiac/sm_1.webp">
+            <span class="project-num">04</span>
+            <div class="project-info">
+              <span class="project-title">SPEED MANIAC</span>
+              <div class="project-meta">
+                <span class="project-genre">RACING</span>
+                <span class="project-platform">UNITY</span>
+              </div>
+            </div>
+            <img src="assets/projects/Unity/SpeedManiac/sm_1.webp" class="project-thumb-small" alt="Thumb">
+            <span class="proj-arrow">→</span>
+          </div>
+
+          <div class="project-row" data-type="launched" data-engine="unity" data-index="05" data-title="BITCOIN WARS"
+            data-genre="STRATEGY / BOARD GAME" data-platform="Mobile" data-date="2023-2024"
+            data-desc="Bitcoin Wars is the digital adaptation of a unique, highly strategic physical board game. Blending turn-based tactics with dice-roll mechanics, players compete to match or exceed target values while leveraging powerful ability cards to disrupt opponents and secure victory.<br><br>Working collaboratively, I architected the core online architecture using Photon (PUN) to ensure seamless, synchronized multiplayer sessions. I integrated a robust Firebase backend for persistent player data and handled the technical implementation of in-app purchases. Beyond netcode, I brought the digital board to life by designing crisp UI elements, fluid animations, and engaging VFX, proving my ability to digitize complex physical rulesets into a flawless mobile experience."
+            data-tags="Photon (PUN),Firebase,Mobile,IAP,UI/UX,Turn-Based Multiplayer"
+            data-links="Website|https://bitcoin-wars.com/" data-video="https://youtu.be/J8dv6LWSDaw"
+            data-screens="assets/projects/Unity/BitcoinW/bw_1.webp,assets/projects/Unity/BitcoinW/bw_2.webp,assets/projects/Unity/BitcoinW/bw_3.webp,assets/projects/Unity/BitcoinW/bw_4.webp,assets/projects/Unity/BitcoinW/bw_5.webp,assets/projects/Unity/BitcoinW/bw_6.webp"
+            data-thumb="assets/projects/Unity/BitcoinW/bw_1.webp">
+            <span class="project-num">05</span>
+            <div class="project-info">
+              <span class="project-title">BITCOIN WARS</span>
+              <div class="project-meta">
+                <span class="project-genre">STRATEGY</span>
+                <span class="project-platform">UNITY</span>
+              </div>
+            </div>
+            <img src="assets/projects/Unity/BitcoinW/bw_1.webp" class="project-thumb-small" alt="Thumb">
+            <span class="proj-arrow">→</span>
+          </div>
+
+          <div class="project-row" data-type="launched" data-engine="unity" data-index="06" data-title="MATCH HARMONY"
+            data-genre="MATCH-3 ARCADE" data-platform="Mobile" data-date="2022"
+            data-desc="Match Harmony is a highly competitive, real-money Match-3 arcade game designed for high-stakes PvP encounters. Relying on lightning-fast reflexes and combo multipliers, players battle for the highest score in a secure, monetized environment.<br><br>My primary focus on this team project was integrating and managing the Skillz SDK to handle secure matchmaking, real-money betting, and dashboard analytics. I engineered multiple complex game modes, pushing the boundaries of traditional Match-3 mechanics. I aggressively tackled bug fixing and UI/UX improvements, while implementing minimalist animations and audio-visual feedback loops to maximize player retention and game feel."
+            data-tags="Skillz SDK,Real-Money Gaming,Mobile Optimization,Game Modes,UI/UX"
+            data-links="App Store|https://apps.apple.com/us/app/match-harmony-win-real-money/id1488601395,Skillz|https://portal-games.cdn.skillz.com/games/puzzle/match-harmony-5582"
+            data-video=""
+            data-screens="assets/projects/Unity/MatchH/mh_1.webp,assets/projects/Unity/MatchH/mh_2.webp,assets/projects/Unity/MatchH/mh_3.webp,assets/projects/Unity/MatchH/mh_4.webp"
+            data-thumb="assets/projects/Unity/MatchH/mh_1.webp">
+            <span class="project-num">06</span>
+            <div class="project-info">
+              <span class="project-title">MATCH HARMONY</span>
+              <div class="project-meta">
+                <span class="project-genre">PUZZLE</span>
+                <span class="project-platform">UNITY</span>
+              </div>
+            </div>
+            <img src="assets/projects/Unity/MatchH/mh_1.webp" class="project-thumb-small" alt="Thumb">
+            <span class="proj-arrow">→</span>
+          </div>
+
+          <div class="project-row" data-type="launched" data-engine="unity" data-index="07" data-title="CHATTER ART"
+            data-genre="ASYNC PUZZLE / WORD" data-platform="Mobile" data-date="2025-2026"
+            data-desc="Chatter Art is an asynchronous PvP word-building puzzle game that tests players' vocabulary and spatial strategy. Featuring both live 'Quick' and asynchronous 'Day' modes, players place chips to control the board, relying on push notifications to maintain engagement across long-form matches.<br><br>Stepping up as the Tech Lead, I architected the entire foundational codebase. I built the complex turn-shifting logic required for offline/asynchronous play, hooking player profiles and match states directly into a scalable Firebase database. I mentored the team through multiplayer implementation, developed intelligent AI bots for solo practice, and polished the final product with high-quality UI, VFX, and audio integration. This project was a masterclass in scalable mobile architecture."
+            data-tags="Asynchronous Multiplayer,Firebase,Tech Lead,System Architecture,Smart AI,Push Notifications"
+            data-links="Play Store|https://play.google.com/store/apps/details?id=com.gamesition.chatterart,App Store|https://apps.apple.com/us/app/chatterart/id6753218831"
+            data-video="https://youtu.be/TF6FGCQ6yQ4"
+            data-screens="assets/projects/Unity/ChatterA/ca_1.webp,assets/projects/Unity/ChatterA/ca_2.webp,assets/projects/Unity/ChatterA/ca_3.webp,assets/projects/Unity/ChatterA/ca_4.webp,assets/projects/Unity/ChatterA/ca_5.webp,assets/projects/Unity/ChatterA/ca_6.webp,assets/projects/Unity/ChatterA/ca_7.webp"
+            data-thumb="assets/projects/Unity/ChatterA/ca_1.webp">
+            <span class="project-num">07</span>
+            <div class="project-info">
+              <span class="project-title">CHATTER ART</span>
+              <div class="project-meta">
+                <span class="project-genre">PUZZLE</span>
+                <span class="project-platform">UNITY</span>
+              </div>
+            </div>
+            <img src="assets/projects/Unity/ChatterA/ca_1.webp" class="project-thumb-small" alt="Thumb">
+            <span class="proj-arrow">→</span>
+          </div>
+
+          <div class="project-row" data-type="learning" data-engine="unity" data-index="08" data-title="TANK FIGHT"
+            data-genre="LOCAL MULTIPLAYER" data-platform="PC" data-date="2021"
+            data-desc="Tank Fight is a chaotic, top-down local multiplayer action game supporting up to 4 players in split-screen combat. Players navigate dynamic arenas, securing power-ups and utilizing tight twin-stick shooting mechanics to be the last tank standing.<br><br>Built as a solo engineering challenge, I architected the entire split-screen logic and multiplayer framework from scratch. The core technical achievement was implementing a robust local-multiplayer input manager utilizing Unity's New Input System, seamlessly handling dynamic assignment of gamepads and keyboards. I fleshed out the experience with polished UI, punchy audio, and satisfying core combat mechanics, resulting in a highly replayable couch co-op prototype."
+            data-tags="Local Multiplayer,Split-Screen,New Input System,Combat Mechanics" data-links=""
+            data-video="https://youtu.be/VrUIKN00Rpk"
+            data-screens="assets/projects/Unity/TankFight/tf_1.webp,assets/projects/Unity/TankFight/tf_2.webp,assets/projects/Unity/TankFight/tf_3.webp,assets/projects/Unity/TankFight/tf_4.webp"
+            data-thumb="assets/projects/Unity/TankFight/tf_1.webp">
+            <span class="project-num">08</span>
+            <div class="project-info">
+              <span class="project-title">TANK FIGHT</span>
+              <div class="project-meta">
+                <span class="project-genre">ACTION</span>
+                <span class="project-platform">UNITY</span>
+              </div>
+            </div>
+            <img src="assets/projects/Unity/TankFight/tf_1.webp" class="project-thumb-small" alt="Thumb">
+            <span class="proj-arrow">→</span>
+          </div>
+
+          <div class="project-row" data-type="learning" data-engine="unity" data-index="09" data-title="SPIRIT MONK"
+            data-genre="ARCADE ROGUELIKE" data-platform="PC" data-date="2021"
+            data-desc="Spirit Monk is an adrenaline-fueled roguelike arcade game born from a 48-hour Game Jam centered on the theme of 'Duality'. Players manage two distinct states-Human and Spirit-each with unique physical properties regarding obstacles and light, requiring intense focus to balance health and progression.<br><br>As a solo developer racing against the clock, I handled 100% of the game design, programming, and asset integration. I engineered a flawless state-machine logic to swap physical collision rules instantly, built a functional shop/upgrade economy, and tied the core loop together with striking UI and animations. It was a thrilling test of rapid problem solving, delivering a tightly designed, highly addictive loop in just two days."
+            data-tags="Game Jam,Rapid Prototyping,Game Design,State Machines" data-links=""
+            data-video="https://youtu.be/8WJcRC3Icts"
+            data-screens="assets/projects/Unity/SpiritMonk/sm_1.webp,assets/projects/Unity/SpiritMonk/sm_2.webp,assets/projects/Unity/SpiritMonk/sm_3.webp,assets/projects/Unity/SpiritMonk/sm_4.webp,assets/projects/Unity/SpiritMonk/sm_5.webp,assets/projects/Unity/SpiritMonk/sm_6.webp"
+            data-thumb="assets/projects/Unity/SpiritMonk/sm_1.webp">
+            <span class="project-num">09</span>
+            <div class="project-info">
+              <span class="project-title">SPIRIT MONK</span>
+              <div class="project-meta">
+                <span class="project-genre">ARCADE</span>
+                <span class="project-platform">UNITY</span>
+              </div>
+            </div>
+            <img src="assets/projects/Unity/SpiritMonk/sm_1.webp" class="project-thumb-small" alt="Thumb">
+            <span class="proj-arrow">→</span>
+          </div>
+
+          <div class="project-row" data-type="launched" data-engine="unity" data-index="10"
+            data-title="DEBT FREE MILLIONAIRE" data-genre="EDUCATIONAL SIMULATION" data-platform="PC / Web"
+            data-date="2024-2025"
+            data-desc="Debt Free Millionaire is a serious simulation game designed to teach critical financial literacy. Players navigate complex life decisions, manage fluctuating salaries, trade stocks, and clear debt, all presented through an engaging UI and interactive mini-games to make learning highly intuitive.<br><br>Taking total technical ownership of the project, I architected the underlying data-driven systems required to simulate dynamic economies and personal finance logic. I built a highly responsive, app-like UI framework, designed educational mini-games to break up the data management, and ensured the entire experience felt rewarding and accessible. This project highlights my ability to turn dry, complex data structures into a genuinely engaging gamified experience."
+            data-tags="E-Learning,System Architecture,UI/UX,Mini-Games,Gamification,Data-Driven Design" data-links=""
+            data-video="https://youtu.be/_UXSe9eQ314"
+            data-screens="assets/projects/Unity/DFM/d_1.webp,assets/projects/Unity/DFM/d_2.webp,assets/projects/Unity/DFM/d_3.webp,assets/projects/Unity/DFM/d_4.webp,assets/projects/Unity/DFM/d_5.webp,assets/projects/Unity/DFM/d_6.webp,assets/projects/Unity/DFM/d_7.webp,assets/projects/Unity/DFM/d_8.webp,assets/projects/Unity/DFM/d_9.webp,assets/projects/Unity/DFM/d_10.webp"
+            data-thumb="assets/projects/Unity/DFM/d_1.webp">
+            <span class="project-num">10</span>
+            <div class="project-info">
+              <span class="project-title">DEBT FREE MILLIONAIRE</span>
+              <div class="project-meta">
+                <span class="project-genre">SIMULATION</span>
+                <span class="project-platform">UNITY</span>
+              </div>
+            </div>
+            <img src="assets/projects/Unity/DFM/d_1.webp" class="project-thumb-small" alt="Thumb">
+            <span class="proj-arrow">→</span>
+          </div>
+
+          <div class="project-row" data-type="launched" data-engine="unity" data-index="11" data-title="CAPTAIN SUCCESS"
+            data-genre="E-LEARNING / APP" data-platform="Mobile" data-date="2024-2025"
+            data-desc="Captain Success is a cutting-edge interactive E-Learning application that delivers course materials through a fully animated, AI-driven digital avatar. Featuring seamless English and Spanish voice interactions, students can converse directly with the character to query course databases.<br><br>As the sole developer, I engineered the entire tech stack. I integrated advanced AI APIs, live Speech-to-Text (STT), and Text-to-Speech (TTS) pipelines. I built a dynamic lip-syncing system to bring the avatar to life, handled robust localization, and implemented strict profanity filters and microphone management protocols. The result is a highly polished, responsive educational tool that showcases my strength in connecting game engines with modern AI and API services."
+            data-tags="E-Learning,AI Integration,Text-to-Speech (TTS),Lip Sync,API Integration,Localization"
+            data-links="" data-video="https://youtu.be/1PO1-1MlGyM"
+            data-screens="assets/projects/Unity/CP/cs_1.webp,assets/projects/Unity/CP/cs_2.webp,assets/projects/Unity/CP/cs_3.webp,assets/projects/Unity/CP/cs_4.webp,assets/projects/Unity/CP/cs_5.webp,assets/projects/Unity/CP/cs_6.webp"
+            data-thumb="assets/projects/Unity/CP/cs_1.webp">
+            <span class="project-num">11</span>
+            <div class="project-info">
+              <span class="project-title">CAPTAIN SUCCESS</span>
+              <div class="project-meta">
+                <span class="project-genre">APP</span>
+                <span class="project-platform">UNITY</span>
+              </div>
+            </div>
+            <img src="assets/projects/Unity/CP/cs_1.webp" class="project-thumb-small" alt="Thumb">
+            <span class="proj-arrow">→</span>
+          </div>
+
+          <div class="project-row" data-type="launched" data-engine="unity" data-index="12" data-title="ACADZO"
+            data-genre="E-LEARNING / EDTECH" data-platform="PC / Web" data-date="2021-2022"
+            data-desc="Acadzo is an interactive educational platform engineered to radically improve students' rapid mathematical skills. Through highly gamified time-trials and dynamic question generation, players are pushed to solve complex equations under pressure to beat their high scores.<br><br>Acting as the sole architect, I designed the core mathematical generation algorithms to ensure difficulty scaling and accurate logic validation. I developed a clean, distraction-free UI, implemented the underlying database structures for score tracking, and polished the feedback loops with satisfying audio and visual cues. This project reinforced my ability to build clean, purpose-driven applications focused entirely on user flow and retention."
+            data-tags="E-Learning,System Architecture,UI/UX,Math Logic,Gamification"
+            data-links="Website|https://acadzo.com/" data-video=""
+            data-screens="assets/projects/Unity/Acadzo/a_1.webp,assets/projects/Unity/Acadzo/a_2.webp,assets/projects/Unity/Acadzo/a_3.webp,assets/projects/Unity/Acadzo/a_4.webp,assets/projects/Unity/Acadzo/a_5.webp,assets/projects/Unity/Acadzo/a_6.webp,assets/projects/Unity/Acadzo/a_7.webp"
+            data-thumb="assets/projects/Unity/Acadzo/a_1.webp">
+            <span class="project-num">12</span>
+            <div class="project-info">
+              <span class="project-title">ACADZO</span>
+              <div class="project-meta">
+                <span class="project-genre">APP</span>
+                <span class="project-platform">UNITY</span>
+              </div>
+            </div>
+            <img src="assets/projects/Unity/Acadzo/a_1.webp" class="project-thumb-small" alt="Thumb">
+            <span class="proj-arrow">→</span>
+          </div>
+
+          <div class="project-row" data-type="learning" data-engine="unity" data-index="13"
+            data-title="SHADOW FIGHT LITE" data-genre="2.5D FIGHTING" data-platform="PC" data-date="2021"
+            data-desc="Shadow Fight Lite is a focused 2.5D fighting game prototype built to deconstruct and replicate the fluid, physics-driven combat mechanics of the popular Shadow Fight series. The project emphasizes precise hitboxes, responsive input handling, and weighty, animation-driven strikes.<br><br>Developed entirely as a solo technical exercise, I engineered the core combat loop utilizing Unity's New Input System for flawless combat control. I integrated the Universal Render Pipeline (URP) to craft custom silhouette shaders and dynamic weapon trails, heavily focusing on frame-perfect animation transitions and robust hitbox logic. This project significantly advanced my understanding of complex animation state machines and competitive fighting game architecture."
+            data-tags="URP,New Input System,Custom Shaders,Hitbox Logic,Combat Mechanics,Animation State Machines"
+            data-links="" data-video="https://youtu.be/U6CfCvaoGjM"
+            data-screens="assets/projects/Unity/Shadow/s_1.webp,assets/projects/Unity/Shadow/s_2.webp,assets/projects/Unity/Shadow/s_3.webp,assets/projects/Unity/Shadow/s_4.webp,assets/projects/Unity/Shadow/s_5.webp,assets/projects/Unity/Shadow/s_6.webp"
+            data-thumb="assets/projects/Unity/Shadow/s_1.webp">
+            <span class="project-num">13</span>
+            <div class="project-info">
+              <span class="project-title">SHADOW FIGHT LITE</span>
+              <div class="project-meta">
+                <span class="project-genre">FIGHTING</span>
+                <span class="project-platform">UNITY</span>
+              </div>
+            </div>
+            <img src="assets/projects/Unity/Shadow/s_1.webp" class="project-thumb-small" alt="Thumb">
+            <span class="proj-arrow">→</span>
+          </div>
+
+          <div class="project-row" data-type="learning" data-engine="unity" data-index="13" data-title="HORIZON LITE"
+            data-genre="ACTION ADVENTURE" data-platform="PC" data-date="2021"
+            data-desc="Horizon Lite is a highly ambitious technical prototype designed to deconstruct and replicate the core mechanics and visual fidelity of a AAA third-person action RPG. The project features stealth mechanics, resource crafting, and complex 3rd-person locomotion.<br><br>Built as a solo deep-dive into high-end graphics programming, I utilized HDRP to push visual boundaries, crafting dense foliage, volumetric lighting, and advanced post-processing stacks. I architected the core gameplay loops from scratch, building a robust character controller and modular inventory systems. It served as a massive leveling-up experience in environment art, graphics rendering, and complex systems design."
+            data-tags="HDRP,Post-Processing,Locomotion,Lighting,Environment Art,Rapid Prototyping" data-links=""
+            data-video="https://youtu.be/jvoxtCEkqSE"
+            data-screens="assets/projects/Unity/Horizon/h_1.webp,assets/projects/Unity/Horizon/h_2.webp,assets/projects/Unity/Horizon/h_3.webp,assets/projects/Unity/Horizon/h_4.webp,assets/projects/Unity/Horizon/h_5.webp,assets/projects/Unity/Horizon/h_6.webp"
+            data-thumb="assets/projects/Unity/Horizon/h_1.webp">
+            <span class="project-num">14</span>
+            <div class="project-info">
+              <span class="project-title">HORIZON LITE</span>
+              <div class="project-meta">
+                <span class="project-genre">ADVENTURE</span>
+                <span class="project-platform">UNITY</span>
+              </div>
+            </div>
+            <img src="assets/projects/Unity/Horizon/h_1.webp" class="project-thumb-small" alt="Thumb">
+            <span class="proj-arrow">→</span>
+          </div>
+
+          <div class="project-row" data-type="learning" data-engine="unreal" data-index="14"
+            data-title="LEVIATHAN PROTOTYPE" data-genre="THIRD-PERSON ACTION" data-platform="PC" data-date="2020"
+            data-desc="Leviathan is a focused technical prototype designed to reverse-engineer and perfect one of gaming's most satisfying mechanics: Kratos's axe throw and recall. Built in Unreal Engine, it serves as a playground for advanced physics manipulation and animation blending.<br><br>As a solo learning venture into the Unreal ecosystem, I relied heavily on Blueprint visual scripting to handle the complex vector math, physics curves, and root motion animations required for the axe behavior. I fleshed out the prototype by designing an atmospheric environment, integrating particle trails, and refining the camera logic to ensure the mechanic felt incredibly heavy and satisfying."
+            data-tags="Blueprints,Root Motion,VFX,Physics,Environment Design" data-links=""
+            data-video="https://youtu.be/a43EBb4DZYg"
+            data-screens="assets/projects/Unreal/Axe/a_1.webp,assets/projects/Unreal/Axe/a_2.webp,assets/projects/Unreal/Axe/a_3.webp,assets/projects/Unreal/Axe/a_4.webp"
+            data-thumb="assets/projects/Unreal/Axe/a_1.webp">
+            <span class="project-num">15</span>
+            <div class="project-info">
+              <span class="project-title">LEVIATHAN PROTOTYPE</span>
+              <div class="project-meta">
+                <span class="project-genre">ACTION</span>
+                <span class="project-platform">UNREAL</span>
+              </div>
+            </div>
+            <img src="assets/projects/Unreal/Axe/a_1.webp" class="project-thumb-small" alt="Thumb">
+            <span class="proj-arrow">→</span>
+          </div>
+
+          <div class="project-row" data-type="learning" data-engine="construct" data-index="15" data-title="THE DROP"
+            data-genre="PUZZLE-PLATFORMER" data-platform="Web" data-date="2020"
+            data-desc="The Drop is a clever 2D physics puzzle-platformer where players control a sentient water droplet. To navigate complex pipe labyrinths, players must dynamically shift between solid, liquid, and gaseous states to bypass environmental hazards and reach the exit.<br><br>Created during a collaborative Game Jam using Construct 2, I took charge of the technical level design and core state-machine logic. I programmed the distinct physics profiles for each state of matter, wired up the visual scripting, and implemented the UI and audio systems. It was a brilliant exercise in designing mechanics around physics constraints and delivering a complete, playable puzzle loop under pressure."
+            data-tags="Visual Scripting,Level Design,Game Jam,Physics Puzzles" data-links=""
+            data-video="https://youtu.be/h4rkq_6W8zY"
+            data-screens="assets/projects/Construct/Drop/d_1.webp,assets/projects/Construct/Drop/d_2.webp,assets/projects/Construct/Drop/d_3.webp,assets/projects/Construct/Drop/d_4.webp,assets/projects/Construct/Drop/d_5.webp,assets/projects/Construct/Drop/d_6.webp"
+            data-thumb="assets/projects/Construct/Drop/d_1.webp">
+            <span class="project-num">16</span>
+            <div class="project-info">
+              <span class="project-title">THE DROP</span>
+              <div class="project-meta">
+                <span class="project-genre">PUZZLE</span>
+                <span class="project-platform">CONSTRUCT</span>
+              </div>
+            </div>
+            <img src="assets/projects/Construct/Drop/d_1.webp" class="project-thumb-small" alt="Thumb">
+            <span class="proj-arrow">→</span>
+          </div>
+
+          <div class="project-row" data-type="learning" data-engine="construct" data-index="16" data-title="FIREZEN"
+            data-genre="LOCAL MULTIPLAYER" data-platform="Web" data-date="2020"
+            data-desc="Firezen is a rapid-prototype local multiplayer 2D fighting game built as a technical homage to the classic 'Little Fighter 2'. Two players share a single keyboard to engage in fast-paced, combo-heavy arena combat.<br><br>As a solo project to master Construct 2, I reverse-engineered fighting game logic utilizing pure visual scripting. I built the complex input buffers required for shared-keyboard play, programmed the hitboxes and collision states, and orchestrated the animation timelines. Utilizing publicly available assets, I focused entirely on ensuring the combat felt responsive, fair, and incredibly fun, solidifying my foundational understanding of multiplayer combat design."
+            data-tags="Visual Scripting,Local Multiplayer,Combat Systems,Rapid Prototyping" data-links=""
+            data-video="assets/projects/Construct/Firezen/Firezen.mp4"
+            data-screens="assets/projects/Construct/Firezen/f_1.webp,assets/projects/Construct/Firezen/f_2.webp,assets/projects/Construct/Firezen/f_3.webp,assets/projects/Construct/Firezen/f_4.webp"
+            data-thumb="assets/projects/Construct/Firezen/f_1.webp">
+            <span class="project-num">17</span>
+            <div class="project-info">
+              <span class="project-title">FIREZEN</span>
+              <div class="project-meta">
+                <span class="project-genre">FIGHTING</span>
+                <span class="project-platform">CONSTRUCT</span>
+              </div>
+            </div>
+            <img src="assets/projects/Construct/Firezen/f_1.webp" class="project-thumb-small" alt="Thumb">
+            <span class="proj-arrow">→</span>
+          </div>
+
+          <div class="no-projects-msg" id="no-projects-msg" style="display: none;">
+            <span>No project available under this category and filter.</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACT -->
+      <section id="contact">
+        <div class="section-header">
+          <span class="section-num">04 /</span>
+          <h2 class="section-title">CONTACT</h2>
+          <div class="section-line"></div>
+        </div>
+
+        <div class="contact-inner">
+          <div>
+            <h3 class="contact-heading">
+              <span class="scramble-text">LET'S</span><br>
+              <span class="scramble-text">BUILD</span><br>
+              <span class="outline scramble-text">SOMETHING</span>
+            </h3>
+            <p class="contact-sub">
+              Always looking for the next great project. Whether you're an early-stage studio looking for a core
+              technical
+              pillar, or a team needing a senior dev to hit a milestone - I'm just a message away.
+            </p>
+
+            <div class="contact-links">
+              <a href="mailto:harshalgore.work@gmail.com" class="contact-link" target="_blank" rel="noopener">
+                <div>
+                  <div class="contact-link-label">Email</div>
+                  <div class="contact-link-val">harshalgore.work@gmail.com</div>
+                </div>
+                <span class="contact-link-arrow">→</span>
+              </a>
+              <a href="https://drive.google.com/drive/folders/1cUx6h-9dvc3sQt3pwMkH7fFLdtVE2c7O?usp=sharing"
+                class="contact-link" target="_blank" rel="noopener">
+                <div>
+                  <div class="contact-link-label">Resume</div>
+                  <div class="contact-link-val">Google Drive - Resume Folder</div>
+                </div>
+                <span class="contact-link-arrow">→</span>
+              </a>
+              <a href="https://www.linkedin.com/in/harshalgore/" class="contact-link" target="_blank" rel="noopener">
+                <div>
+                  <div class="contact-link-label">LinkedIn</div>
+                  <div class="contact-link-val">https://www.linkedin.com/in/harshalgore/</div>
+                </div>
+                <span class="contact-link-arrow">→</span>
+              </a>
+              <a href="https://www.youtube.com/@ez_pz_dev" class="contact-link" target="_blank" rel="noopener">
+                <div>
+                  <div class="contact-link-label">YouTube</div>
+                  <div class="contact-link-val">https://www.youtube.com/@ez_pz_dev</div>
+                </div>
+                <span class="contact-link-arrow">→</span>
+              </a>
+              <a href="https://www.instagram.com/harshal_gore_/" class="contact-link" target="_blank" rel="noopener">
+                <div>
+                  <div class="contact-link-label">Instagram</div>
+                  <div class="contact-link-val">https://www.instagram.com/harshal_gore_/</div>
+                </div>
+                <span class="contact-link-arrow">→</span>
+              </a>
+              <a href="https://steamcommunity.com/profiles/76561199151074635/" class="contact-link" target="_blank"
+                rel="noopener">
+                <div>
+                  <div class="contact-link-label">Steam</div>
+                  <div class="contact-link-val">https://steamcommunity.com/profiles/76561199151074635/</div>
+                </div>
+                <span class="contact-link-arrow">→</span>
+              </a>
+              <a href="https://steamcommunity.com/profiles/76561199151074635/" class="contact-link" target="_blank"
+                rel="noopener">
+                <div>
+                  <div class="contact-link-label">Portfolio Website</div>
+                  <div class="contact-link-val">website</div>
+                </div>
+                <span class="contact-link-arrow">→</span>
+              </a>
+            </div>
+          </div>
+
+          <form class="contact-form" id="contact-form" action="https://formsubmit.co/harshalgore.work@gmail.com"
+            method="POST">
+            <input type="hidden" name="_subject" value="New submission from your portfolio!">
+            <input type="hidden" name="_next" value="#">
+            <input type="hidden" name="_captcha" value="false">
+            <div class="form-row">
+              <label class="form-label">Your Name</label>
+              <input class="form-input" type="text" name="name" placeholder="John Doe" required minlength="2"
+                maxlength="50">
+            </div>
+            <div class="form-row">
+              <label class="form-label">Email</label>
+              <input class="form-input" type="email" name="email" placeholder="john@studio.com" required>
+            </div>
+            <div class="form-row">
+              <label class="form-label">Subject</label>
+              <input class="form-input" type="text" name="subject" placeholder="Let's build a game together" required
+                minlength="3" maxlength="100">
+            </div>
+            <div class="form-row">
+              <label class="form-label">Message</label>
+              <textarea class="form-textarea" name="message" rows="4" placeholder="Tell me about your project..."
+                required minlength="10" maxlength="2000"></textarea>
+            </div>
+            <button type="submit" class="form-submit">Send Message →</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer>
+        <div class="footer-logo">HARSHAL<span>_</span>GORE</div>
+        <div class="footer-copy">© 2026 • Designed & Developed with 🤍</div>
+      </footer>
+    </div>
+    <!-- MUSIC PLAYER WIDGET -->
+    <div class="music-player" id="music-player">
+      <audio id="bg-audio" preload="auto"></audio>
+
+      <div class="music-min">
+        <button class="music-btn play-btn" id="music-min-play">
+          <svg class="play-icon" id="min-play-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 5v14l11-7z" />
+          </svg>
+          <svg class="pause-icon" id="min-pause-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"
+            style="display:none;">
+            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+          </svg>
+        </button>
+        <div class="music-visualizer" id="music-vis">
+          <div class="vis-bar"></div>
+          <div class="vis-bar"></div>
+          <div class="vis-bar"></div>
+        </div>
+      </div>
+
+      <div class="music-max">
+        <div class="music-header">
+          <div class="now-playing-label">
+            <span class="pulse-dot"></span> <span id="now-playing-text">PAUSED</span>
+          </div>
+          <button class="music-btn close-btn" id="music-close">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="music-info">
+          <div class="music-track" id="music-track-name">LOADING...</div>
+          <div class="music-artist" id="music-artist-name">---</div>
+        </div>
+
+        <div class="music-scrubber-container">
+          <span class="scrubber-time" id="music-curr-time">0:00</span>
+          <div class="music-scrubber" id="music-scrubber">
+            <div class="scrubber-fill" id="music-progress"></div>
+          </div>
+          <span class="scrubber-time" id="music-total-time">0:00</span>
+        </div>
+
+        <div class="music-controls-row">
+          <button class="music-btn" id="music-prev">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z" />
+            </svg>
+          </button>
+          <button class="music-btn play-btn" id="music-play">
+            <svg class="play-icon" id="play-icon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M8 5v14l11-7z" />
+            </svg>
+            <svg class="pause-icon" id="pause-icon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"
+              style="display:none;">
+              <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+            </svg>
+          </button>
+          <button class="music-btn" id="music-next">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="volume-container">
+          <svg class="vol-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+          </svg>
+          <div class="vol-slider-wrap">
+            <input type="range" class="volume-slider" id="music-vol" min="0" max="1" step="0.01" value="0.75">
+            <div class="vol-fill" id="vol-fill" style="width: 75%;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <script>
+    function getInternalY(el) {
+      let y = 0;
+      while (el && el.id !== 'scroll-container') {
+        y += el.offsetTop;
+        el = el.offsetParent;
+      }
+      return y;
+    }
+    const appViewport = document.getElementById('app-viewport');
+    function applyScaling() {
+      const winW = window.innerWidth;
+      const winH = window.innerHeight;
+      const baseW = 2560;
+      const baseH = 1440;
+
+      if (winH > winW) {
+        // Portrait mode -> rotate 90deg to force landscape exploration
+        const scale = Math.min(winW / baseH, winH / baseW);
+        appViewport.style.transform = `translate(-50%, -50%) scale(${scale}) rotate(90deg)`;
+      } else {
+        // Landscape mode -> standard letterbox
+        const scale = Math.min(winW / baseW, winH / baseH);
+        appViewport.style.transform = `translate(-50%, -50%) scale(${scale})`;
+      }
+    }
+    window.addEventListener('resize', applyScaling);
+    applyScaling();
+
+    // Custom cursor
+    const cursor = document.getElementById('cursor');
+    document.addEventListener('mousemove', e => {
+      cursor.style.left = e.clientX - 4 + 'px';
+      cursor.style.top = e.clientY - 4 + 'px';
+    });
+
+    document.querySelectorAll('a, button, .skill-card, .project-row, .featured-project, .music-player, .music-btn, .volume-slider, .music-scrubber, .vol-icon').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        if (el.id === 'music-player' && el.classList.contains('maximized')) return;
+        cursor.style.transform = 'scale(3)';
+
+        // Keep full opacity for precise buttons/links so they perfectly color-invert and remain visible.
+        // Use 0.5 opacity for large cards so the cursor is a subtle highlight.
+        if (el.tagName === 'A' || el.tagName === 'BUTTON' || el.classList.contains('music-scrubber') || el.classList.contains('volume-slider') || el.classList.contains('vol-icon')) {
+          cursor.style.opacity = '1';
+        } else {
+          cursor.style.opacity = '0.5';
+        }
+      });
+      el.addEventListener('mouseleave', () => {
+        cursor.style.transform = 'scale(1)';
+        cursor.style.opacity = '1';
+      });
+    });
+
+    // Dynamic Skill Cards Setup
+    document.querySelectorAll('.skill-card').forEach(card => {
+      const pct = parseInt(card.dataset.percent || 0);
+      let level = 'Beginner';
+      if (pct >= 20 && pct < 40) level = 'Novice';
+      else if (pct >= 40 && pct < 60) level = 'Proficient';
+      else if (pct >= 60 && pct < 80) level = 'Advanced';
+      else if (pct >= 80) level = 'Expert';
+
+      const levelEl = card.querySelector('.skill-level');
+      if (levelEl) levelEl.innerHTML = `${level} - ${pct}%`;
+
+      // Store the target width on the fill element
+      const fillEl = card.querySelector('.skill-bar-fill');
+      if (fillEl) {
+        fillEl.dataset.targetWidth = pct + '%';
+        fillEl.style.width = '0%';
+      }
+    });
+
+    // Scroll animations for skill bars
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const bar = entry.target.querySelector('.skill-bar-fill');
+          if (bar) {
+            setTimeout(() => { bar.style.width = bar.dataset.targetWidth; }, 50);
+          }
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.skill-card').forEach(el => observer.observe(el));
+
+    // Section fade-in
+    const fadeObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.section-header, .about-grid, .contact-inner, .featured-project, .project-row, .skill-card').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(24px)';
+      el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      fadeObserver.observe(el);
+    });
+
+    // Preloader Logic
+    let pct = 0;
+    const pctEl = document.getElementById('preloader-pct');
+    const msgEl = document.getElementById('preloader-msg');
+    const fillEl = document.querySelector('.preloader-fill');
+    const preloader = document.getElementById('preloader');
+
+    if (preloader) {
+      document.body.style.overflow = 'hidden';
+
+      const termBox = document.getElementById('term-box');
+      const bootLines = [
+        "SYSTEM BOOT INITIATED...",
+        "LOADING KERNEL MODULES... OK",
+        "MOUNTING VIRTUAL FILE SYSTEMS... OK",
+        "ESTABLISHING NEURAL LINK...",
+        "BYPASSING SECURITY PROTOCOLS...",
+        "ACCESS GRANTED.",
+        "COMPILING SHADERS [1243/1243]...",
+        "CACHING TEXTURES...",
+        "ALLOCATING MEMORY POOL...",
+        "INITIALIZING PHYSICS ENGINE...",
+        "SPAWNING PLAYER ENTITY...",
+        "DECRYPTING ASSET BUNDLES...",
+        "LOADING AUDIO SUBSYSTEM... OK",
+        "CONNECTING TO MASTER SERVER...",
+        "FETCHING USER PREFERENCES...",
+        "APPLYING POST-PROCESSING FILTERS...",
+        "SYNCHRONIZING WORLD CLOCK...",
+        "WARMING UP GPU CUBEMAPS...",
+        "INITIALIZING UI FRAMEWORK...",
+        "PREPARING VIRTUAL DOM...",
+        "CALIBRATING LIGHTING ENGINE...",
+        "GENERATING NAVMESH...",
+        "INJECTING CUSTOM SCRIPTS...",
+        "VALIDATING DEPENDENCIES... OK",
+        "MOUNTING LEVEL GEOMETRY...",
+        "ESTABLISHING WEBSOCKET CONNECTION...",
+        "RESOLVING ASSET REFERENCES...",
+        "FINALIZING BOOT SEQUENCE..."
+      ];
+      let lineIdx = 0;
+
+      const termInterval = setInterval(() => {
+        if (lineIdx < bootLines.length && termBox) {
+          const div = document.createElement('div');
+          div.textContent = `> ${bootLines[lineIdx]}`;
+          termBox.appendChild(div);
+          if (termBox.childElementCount > 10) {
+            termBox.removeChild(termBox.firstChild);
+          }
+          lineIdx++;
+        }
+      }, 120);
+
+      const interval = setInterval(() => {
+        pct += Math.floor(Math.random() * 4) + 2;
+        if (pct >= 100) {
+          pct = 100;
+          clearInterval(interval);
+          clearInterval(termInterval);
+          setTimeout(() => {
+            preloader.style.opacity = '0';
+            document.body.style.overflow = 'auto';
+            setTimeout(() => {
+              preloader.remove();
+              if (window.initHeroGlitch) window.initHeroGlitch();
+              const mPlayer = document.querySelector('.music-player');
+              if (mPlayer) {
+                mPlayer.classList.add('attention');
+                setTimeout(() => mPlayer.classList.remove('attention'), 1600);
+              }
+            }, 500);
+          }, 400);
+        }
+
+        if (pct < 30) msgEl.textContent = 'INITIALIZING ENGINE...';
+        else if (pct < 60) msgEl.textContent = 'COMPILING SHADERS...';
+        else msgEl.textContent = 'LOADING ASSETS...';
+
+        pctEl.textContent = pct;
+        fillEl.style.width = pct + '%';
+      }, 120);
+    }
+
+    // Skills Filter Logic
+    const skillCats = document.querySelectorAll('.skill-cat-btn');
+    const skillCards = document.querySelectorAll('.skill-card');
+
+    skillCats.forEach(btn => {
+      btn.addEventListener('click', () => {
+        skillCats.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const cat = btn.dataset.cat;
+
+        skillCards.forEach(card => {
+          if (cat === 'all' || card.dataset.cat === cat) {
+            card.style.display = 'block';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    // Project Swapping & Filter Logic
+    const projTabs = document.querySelectorAll('.proj-tab');
+    const projTags = document.querySelectorAll('.proj-tag');
+    const projRows = document.querySelectorAll('.project-row');
+
+    let currentType = 'launched';
+    let currentEngine = 'all';
+
+    const projDisplay = document.getElementById('project-display');
+    const dispIndex = document.querySelector('.proj-disp-index');
+    const dispDate = document.querySelector('.proj-disp-date');
+    const dispTitle = document.querySelector('.proj-disp-title');
+    const dispGenre = document.querySelector('.proj-disp-genre');
+    const dispEngine = document.querySelector('.proj-disp-engine');
+    const dispPlatform = document.querySelector('.proj-disp-platform');
+    const dispDesc = document.querySelector('.proj-disp-desc');
+    const dispTags = document.querySelector('.proj-disp-tags');
+
+    const mainVideo = document.getElementById('proj-main-video');
+    const mainImg = document.getElementById('proj-main-img');
+    const thumbsContainer = document.getElementById('proj-gallery-thumbs');
+
+    const mainYoutube = document.getElementById('proj-main-youtube');
+
+    function setMainVisual(type, src) {
+      if (!src) return;
+      const fsBtn = document.getElementById('fullscreen-btn');
+      if (type === 'video') {
+        mainImg.style.display = 'none';
+
+        if (src.includes('youtube.com') || src.includes('youtu.be')) {
+          mainVideo.style.display = 'none';
+          mainVideo.pause();
+          mainYoutube.style.display = 'block';
+
+          let videoId = '';
+          if (src.includes('youtu.be/')) videoId = src.split('youtu.be/')[1].split('?')[0].trim();
+          else if (src.includes('v=')) videoId = src.split('v=')[1].split('&')[0].trim();
+
+          mainYoutube.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&rel=0`;
+          if (fsBtn) fsBtn.style.display = 'none';
+        } else {
+          mainYoutube.style.display = 'none';
+          mainYoutube.src = '';
+          mainVideo.style.display = 'block';
+          mainVideo.src = src;
+          if (fsBtn) fsBtn.style.display = 'none';
+        }
+      } else {
+        mainVideo.style.display = 'none';
+        mainVideo.pause();
+        mainYoutube.style.display = 'none';
+        mainYoutube.src = '';
+        mainImg.style.display = 'block';
+        mainImg.src = src;
+        if (fsBtn) fsBtn.style.display = 'flex';
+      }
+    }
+
+    function updateFeatured(row, scroll = true) {
+      document.querySelectorAll('.project-row').forEach(r => r.classList.remove('active'));
+      if (row) row.classList.add('active');
+
+      dispIndex.textContent = row.dataset.index || '00';
+      dispDate.textContent = row.dataset.date || '';
+      dispTitle.textContent = row.dataset.title || '';
+      dispTitle.setAttribute('data-original', row.dataset.title || '');
+      dispGenre.textContent = row.dataset.genre || '';
+      dispEngine.textContent = row.dataset.engine || '';
+      dispPlatform.textContent = row.dataset.platform || '';
+      dispDesc.innerHTML = row.dataset.desc || '';
+
+      // Update Tags
+      dispTags.innerHTML = '';
+      if (row.dataset.tags) {
+        const tags = row.dataset.tags.split(',');
+        tags.forEach(t => {
+          const s = document.createElement('span');
+          s.className = 'tag';
+          s.textContent = t.trim();
+          dispTags.appendChild(s);
+        });
+      }
+
+      // Helper to attach cursor to dynamic elements
+      const attachCursor = (el) => {
+        el.addEventListener('mouseenter', () => {
+          const cursor = document.getElementById('cursor');
+          if (cursor) {
+            cursor.style.transform = 'scale(2)';
+            cursor.style.opacity = '1';
+          }
+        });
+        el.addEventListener('mouseleave', () => {
+          const cursor = document.getElementById('cursor');
+          if (cursor) {
+            cursor.style.transform = 'scale(1)';
+            cursor.style.opacity = '1';
+          }
+        });
+      };
+
+      // Update Links
+      const linksContainer = document.querySelector('.proj-disp-links');
+      if (linksContainer) {
+        linksContainer.innerHTML = '';
+        if (row.dataset.links) {
+          const links = row.dataset.links.split(',');
+          links.forEach(l => {
+            const parts = l.split('|');
+            if (parts.length === 2) {
+              const a = document.createElement('a');
+              a.href = parts[1].trim();
+              a.target = '_blank';
+              a.className = 'proj-link-btn';
+              a.textContent = '→ ' + parts[0].trim().toUpperCase();
+              attachCursor(a);
+              linksContainer.appendChild(a);
+            }
+          });
+        }
+      }
+
+      // Update Visuals Gallery
+      thumbsContainer.innerHTML = '';
+      let firstVisualSet = false;
+
+      const videoSrc = row.dataset.video;
+      const screensSrc = row.dataset.screens;
+      const screens = screensSrc ? screensSrc.split(',').map(s => s.trim()).filter(s => s) : [];
+
+      // 1. First Screenshot
+      if (screens.length > 0) {
+        const src = screens[0];
+        setMainVisual('img', src);
+        firstVisualSet = true;
+
+        const iThumb = document.createElement('img');
+        iThumb.className = 'proj-thumb-item active';
+        iThumb.src = src;
+        iThumb.onclick = () => {
+          document.querySelectorAll('.proj-thumb-item').forEach(t => t.classList.remove('active'));
+          iThumb.classList.add('active');
+          setMainVisual('img', src);
+        };
+        attachCursor(iThumb);
+        thumbsContainer.appendChild(iThumb);
+      }
+
+      // 2. Video
+      if (videoSrc) {
+        if (!firstVisualSet) {
+          setMainVisual('video', videoSrc);
+          firstVisualSet = true;
+        }
+
+        const vThumb = document.createElement('div');
+        vThumb.className = 'proj-thumb-item';
+        if (screens.length === 0) vThumb.classList.add('active');
+        let coverImg = screens.length > 0 ? screens[0] : '';
+        if (!coverImg && (videoSrc.includes('youtube.com') || videoSrc.includes('youtu.be'))) {
+          let videoId = '';
+          if (videoSrc.includes('youtu.be/')) videoId = videoSrc.split('youtu.be/')[1].split('?')[0].trim();
+          else if (videoSrc.includes('v=')) videoId = videoSrc.split('v=')[1].split('&')[0].trim();
+          coverImg = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+        }
+        vThumb.style.background = coverImg ? `url('${coverImg}') center/cover` : '#222';
+        vThumb.style.position = 'relative';
+        vThumb.innerHTML = `
+          <div style="position:absolute; top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;">
+             <div style="width:28px;height:28px;border:2px solid var(--red);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--red);font-size:0.8rem;padding-left:3px;background:rgba(0,0,0,0.6);backdrop-filter:blur(2px);">▶</div>
+          </div>
+        `;
+        vThumb.onclick = () => {
+          document.querySelectorAll('.proj-thumb-item').forEach(t => t.classList.remove('active'));
+          vThumb.classList.add('active');
+          setMainVisual('video', videoSrc);
+        };
+        attachCursor(vThumb);
+        thumbsContainer.appendChild(vThumb);
+      }
+
+      // 3. Remaining Screenshots
+      if (screens.length > 1) {
+        for (let idx = 1; idx < screens.length; idx++) {
+          const src = screens[idx];
+          const iThumb = document.createElement('img');
+          iThumb.className = 'proj-thumb-item';
+          iThumb.src = src;
+
+          iThumb.onclick = () => {
+            document.querySelectorAll('.proj-thumb-item').forEach(t => t.classList.remove('active'));
+            iThumb.classList.add('active');
+            setMainVisual('img', src);
+          };
+          attachCursor(iThumb);
+          thumbsContainer.appendChild(iThumb);
+        }
+      }
+
+      // Fallback if no media
+      if (!firstVisualSet) {
+        mainVideo.style.display = 'none';
+        mainImg.style.display = 'block';
+        mainImg.src = '';
+        mainImg.alt = 'NO MEDIA FOUND';
+      }
+
+      if (scroll && projDisplay) {
+        const projectsSec = document.getElementById('projects');
+        if (projectsSec) {
+          const y = getInternalY(projectsSec);
+          document.getElementById('scroll-container').scrollTo({ top: y, behavior: 'smooth' });
+        }
+      }
+    }
+
+    function filterProjects(isInitial = false) {
+      const projListContainer = document.querySelector('.projects-list');
+      if (projListContainer) projListContainer.scrollTop = 0;
+
+      let firstVisible = null;
+      let visibleCount = 0;
+      projRows.forEach(row => {
+        const matchType = row.dataset.type === currentType;
+        const matchEngine = currentEngine === 'all' || row.dataset.engine.toLowerCase().includes(currentEngine.toLowerCase());
+        if (matchType && matchEngine) {
+          row.style.display = 'grid';
+          visibleCount++;
+          if (!firstVisible) firstVisible = row;
+        } else {
+          row.style.display = 'none';
+        }
+      });
+
+      const noProjMsg = document.getElementById('no-projects-msg');
+      const projDisplay = document.getElementById('project-display');
+
+      if (visibleCount === 0) {
+        if (noProjMsg) noProjMsg.style.display = 'flex';
+        if (projDisplay) {
+          projDisplay.style.opacity = '0.4';
+          projDisplay.style.pointerEvents = 'none';
+        }
+      } else {
+        if (noProjMsg) noProjMsg.style.display = 'none';
+        if (projDisplay) {
+          projDisplay.style.opacity = '1';
+          projDisplay.style.pointerEvents = 'auto';
+        }
+        if (firstVisible) {
+          updateFeatured(firstVisible, false);
+        }
+      }
+    }
+
+    projTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        projTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentType = tab.dataset.type;
+        filterProjects();
+        setTimeout(() => {
+          const filtersEl = document.querySelector('.project-filters');
+          const projectsSec = document.getElementById('projects');
+          if (filtersEl && projectsSec) {
+            let y = getInternalY(filtersEl) - 120;
+            const maxScroll = getInternalY(projectsSec) + projectsSec.offsetHeight - 1440;
+            if (y > maxScroll) {
+              y = maxScroll;
+            }
+            y = Math.max(0, y);
+            document.getElementById('scroll-container').scrollTo({ top: y, behavior: 'smooth' });
+          }
+        }, 50);
+      });
+    });
+
+    projTags.forEach(tag => {
+      tag.addEventListener('click', () => {
+        projTags.forEach(t => t.classList.remove('active'));
+        tag.classList.add('active');
+        currentEngine = tag.dataset.engine;
+        filterProjects();
+        setTimeout(() => {
+          const filtersEl = document.querySelector('.project-filters');
+          const projectsSec = document.getElementById('projects');
+          if (filtersEl && projectsSec) {
+            let y = getInternalY(filtersEl) - 120;
+            const maxScroll = getInternalY(projectsSec) + projectsSec.offsetHeight - 1440;
+            if (y > maxScroll) {
+              y = maxScroll;
+            }
+            y = Math.max(0, y);
+            document.getElementById('scroll-container').scrollTo({ top: y, behavior: 'smooth' });
+          }
+        }, 50);
+      });
+    });
+
+    projRows.forEach(row => {
+      row.addEventListener('click', () => {
+        updateFeatured(row, true);
+      });
+    });
+
+    // Run filter initially without scrolling
+    filterProjects(true);
+
+    // Music Player Logic
+    const musicPlayer = document.getElementById('music-player');
+    const audioEl = document.getElementById('bg-audio');
+    const btnPlay = document.getElementById('music-play');
+    const btnMinPlay = document.getElementById('music-min-play');
+    const btnMin = document.getElementById('music-close');
+    const btnNext = document.getElementById('music-next');
+    const btnPrev = document.getElementById('music-prev');
+    const volSlider = document.getElementById('music-vol');
+    const volFill = document.getElementById('vol-fill');
+
+    const nowPlayingText = document.getElementById('now-playing-text');
+    const trackNameEl = document.getElementById('music-track-name');
+    const artistNameEl = document.getElementById('music-artist-name');
+    const currTimeEl = document.getElementById('music-curr-time');
+    const totalTimeEl = document.getElementById('music-total-time');
+    const progressFill = document.getElementById('music-progress');
+    const scrubberContainer = document.getElementById('music-scrubber');
+
+    const maxPlayIcon = document.getElementById('play-icon');
+    const maxPauseIcon = document.getElementById('pause-icon');
+    const minPlayIcon = document.getElementById('min-play-icon');
+    const minPauseIcon = document.getElementById('min-pause-icon');
+
+    const playlist = [
+      "Playground_Bea Miller - Arcane League of Legends.mp3",
+      "Enemy_Imagine Dragons - Arcane League of Legends.mp3",
+      "Legend_The Score.mp3",
+      "Die For You_Grabbitz - VALORANT.mp3",
+      "Believer_Imagine Dragons.mp3",
+      "GLADIATOR_ZAYDE WOLF.mp3",
+      "Legends Never Die_League of Legends.mp3",
+      "Turbo Killer_Carpenter Brut.mp3",
+      "The Rebel Path_P.T. Adamczyk.mp3",
+      "I'm So Sorry_Imagine Dragons.mp3",
+      "Ticking Away_Grabbitz & bbno$ - VALORANT.mp3",
+      "Spoiler_Hyper.mp3",
+      "Warriors_Imagine Dragons - League of Legends.mp3",
+      "Unstoppable_The Score.mp3"
+    ];
+    let currentTrackIdx = 0;
+    let isPlaying = false;
+
+    function formatTime(seconds) {
+      if (isNaN(seconds)) return "0:00";
+      const m = Math.floor(seconds / 60);
+      const s = Math.floor(seconds % 60);
+      return `${m}:${s < 10 ? '0' : ''}${s}`;
+    }
+
+    function updateTrackInfo() {
+      const src = audioEl.getAttribute('src');
+      if (src) {
+        let filename = decodeURIComponent(src.split('/').pop().replace('.mp3', ''));
+        let firstUnderscoreIdx = filename.indexOf('_');
+        if (firstUnderscoreIdx !== -1) {
+          if (trackNameEl) trackNameEl.textContent = filename.substring(0, firstUnderscoreIdx).trim() || 'UNKNOWN TRACK';
+          if (artistNameEl) artistNameEl.textContent = filename.substring(firstUnderscoreIdx + 1).trim() || 'UNKNOWN ARTIST';
+        } else {
+          if (trackNameEl) trackNameEl.textContent = filename.trim();
+          if (artistNameEl) artistNameEl.textContent = 'UNKNOWN ARTIST';
+        }
+      }
+    }
+
+    function loadTrack(index) {
+      if (index >= playlist.length) index = 0;
+      if (index < 0) index = playlist.length - 1;
+      currentTrackIdx = index;
+      audioEl.src = "audio/" + playlist[currentTrackIdx];
+      updateTrackInfo();
+
+      progressFill.style.width = '0%';
+      currTimeEl.textContent = "0:00";
+      totalTimeEl.textContent = "0:00"; // Will update on loadedmetadata
+
+      if (isPlaying) {
+        audioEl.play().catch(e => console.log('Audio play failed:', e));
+      }
+    }
+
+    // Init first track
+    audioEl.src = "audio/" + playlist[currentTrackIdx];
+    updateTrackInfo();
+
+    function togglePlay() {
+      if (isPlaying) {
+        audioEl.pause();
+        isPlaying = false;
+        maxPlayIcon.style.display = 'block';
+        maxPauseIcon.style.display = 'none';
+        minPlayIcon.style.display = 'block';
+        minPauseIcon.style.display = 'none';
+        musicPlayer.classList.remove('playing');
+        if (nowPlayingText) nowPlayingText.textContent = 'PAUSED';
+      } else {
+        audioEl.play().catch(e => console.log('Audio play failed:', e));
+        isPlaying = true;
+        maxPlayIcon.style.display = 'none';
+        maxPauseIcon.style.display = 'block';
+        minPlayIcon.style.display = 'none';
+        minPauseIcon.style.display = 'block';
+        musicPlayer.classList.add('playing');
+        if (nowPlayingText) nowPlayingText.textContent = 'NOW PLAYING';
+      }
+    }
+
+    audioEl.addEventListener('loadedmetadata', () => {
+      totalTimeEl.textContent = formatTime(audioEl.duration);
+    });
+
+    audioEl.addEventListener('timeupdate', () => {
+      currTimeEl.textContent = formatTime(audioEl.currentTime);
+      if (audioEl.duration) {
+        const progressPercent = (audioEl.currentTime / audioEl.duration) * 100;
+        progressFill.style.width = `${progressPercent}%`;
+      }
+    });
+
+    audioEl.addEventListener('ended', () => {
+      loadTrack(currentTrackIdx + 1);
+    });
+
+    if (scrubberContainer) {
+      let isDraggingScrubber = false;
+
+      const updateScrubberToPos = (clientX) => {
+        if (!audioEl.duration) return;
+        const rect = scrubberContainer.getBoundingClientRect();
+        let pos = (clientX - rect.left) / rect.width;
+        pos = Math.max(0, Math.min(1, pos));
+        audioEl.currentTime = pos * audioEl.duration;
+      };
+
+      scrubberContainer.addEventListener('mousedown', (e) => {
+        e.stopPropagation();
+        isDraggingScrubber = true;
+        updateScrubberToPos(e.clientX);
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (isDraggingScrubber) {
+          updateScrubberToPos(e.clientX);
+        }
+      });
+
+      document.addEventListener('mouseup', () => {
+        isDraggingScrubber = false;
+      });
+    }
+
+    if (musicPlayer) {
+      musicPlayer.addEventListener('click', (e) => {
+        if (!musicPlayer.classList.contains('maximized') && !e.target.closest('.music-btn') && !e.target.closest('.music-scrubber-container') && !e.target.closest('.volume-container')) {
+          musicPlayer.classList.add('maximized');
+          if (cursor) {
+            cursor.style.transform = 'scale(1)';
+            cursor.style.opacity = '1';
+          }
+        }
+      });
+    }
+
+    if (btnMin) {
+      btnMin.addEventListener('click', (e) => {
+        e.stopPropagation();
+        musicPlayer.classList.remove('maximized');
+      });
+    }
+
+    if (btnPlay) {
+      btnPlay.addEventListener('click', (e) => {
+        e.stopPropagation();
+        togglePlay();
+      });
+    }
+
+    if (btnMinPlay) {
+      btnMinPlay.addEventListener('click', (e) => {
+        e.stopPropagation();
+        togglePlay();
+        if (isPlaying) {
+          musicPlayer.classList.add('maximized');
+        }
+      });
+    }
+
+    if (btnNext) {
+      btnNext.addEventListener('click', (e) => {
+        e.stopPropagation();
+        loadTrack(currentTrackIdx + 1);
+      });
+    }
+
+    if (btnPrev) {
+      btnPrev.addEventListener('click', (e) => {
+        e.stopPropagation();
+        loadTrack(currentTrackIdx - 1);
+      });
+    }
+
+    const volIcon = document.querySelector('.vol-icon');
+    const volIconPath = volIcon ? volIcon.querySelector('path') : null;
+    const unmutePath = "M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z";
+    const mutePath = "M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.21.05-.42.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z";
+
+    let lastVolume = 0.75;
+
+    function updateVolumeUI(vol) {
+      if (volSlider) volSlider.value = vol;
+      if (volFill) volFill.style.width = (vol * 100) + '%';
+      if (volIconPath) {
+        if (vol === 0) {
+          volIconPath.setAttribute('d', mutePath);
+        } else {
+          volIconPath.setAttribute('d', unmutePath);
+        }
+      }
+    }
+
+    // Set initial volume state
+    audioEl.volume = 0.75;
+    updateVolumeUI(0.75);
+
+    if (volSlider) {
+      volSlider.addEventListener('input', (e) => {
+        e.stopPropagation();
+        const val = parseFloat(e.target.value);
+        audioEl.volume = val;
+        if (val > 0) {
+          lastVolume = val;
+        } else {
+          lastVolume = 0.01; // 1% as the fallback last valid volume
+        }
+        updateVolumeUI(val);
+      });
+    }
+
+    if (volIcon) {
+      volIcon.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (audioEl.volume > 0) {
+          audioEl.volume = 0;
+          updateVolumeUI(0);
+        } else {
+          audioEl.volume = lastVolume;
+          updateVolumeUI(lastVolume);
+        }
+      });
+    }
+
+    // Hero Text Glitch Animation
+    const heroBgText = document.getElementById('hero-bg-text');
+    const roles =
+      [
+        'GAME DEV',
+        'PROGRAMMER',
+        'SYSTEMS ARCHITECT',
+        'GAME DESIGNER',
+        'LEVEL DESIGNER',
+        'GAMER',
+        'TECH ARTIST',
+        '3D ARTIST',
+        'ANIMATOR',
+        'VFX ARTIST',
+        'UI/UX DESIGNER',
+        'WEB DEV',
+        'ILLUSTRATOR',
+        'PHOTO EDITOR',
+        'VIDEO EDITOR',
+        'CONTENT CREATOR',
+        'OTAKU'
+      ];
+    let roleIdx = 0;
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*';
+
+    function glitchText(targetWord) {
+      let iterations = 0;
+      const maxIterations = 15;
+
+      const interval = setInterval(() => {
+        let scrambled = targetWord.split('').map((char, index) => {
+          if (index < iterations / 2) {
+            return targetWord[index];
+          }
+          return chars[Math.floor(Math.random() * chars.length)];
+        }).join('');
+
+        heroBgText.innerText = scrambled;
+
+        if (iterations >= maxIterations * 2) {
+          clearInterval(interval);
+          heroBgText.innerText = targetWord;
+        }
+        iterations++;
+      }, 40);
+    }
+
+    window.initHeroGlitch = function () {
+      setInterval(() => {
+        roleIdx = (roleIdx + 1) % roles.length;
+        glitchText(roles[roleIdx]);
+      }, 4500);
+    };
+
+    if (!document.getElementById('preloader')) {
+      window.initHeroGlitch();
+    }
+
+    // Scramble effect for CODE BUILD PLAY
+    document.querySelectorAll('.scramble-text').forEach(el => {
+      let scrambleInterval = null;
+
+      el.addEventListener('mouseenter', () => {
+        const originalText = el.getAttribute('data-original') || el.innerText;
+        if (!el.hasAttribute('data-original')) el.setAttribute('data-original', originalText);
+
+        let iterations = 0;
+        const maxIterations = 15;
+        if (scrambleInterval) clearInterval(scrambleInterval);
+
+        scrambleInterval = setInterval(() => {
+          let scrambled = originalText.split('').map((char, index) => {
+            if (index < iterations / 1.5) {
+              return originalText[index];
+            }
+            return chars[Math.floor(Math.random() * chars.length)];
+          }).join('');
+
+          el.innerText = scrambled;
+
+          if (iterations >= maxIterations * 2) {
+            clearInterval(scrambleInterval);
+            el.innerText = originalText;
+          }
+          iterations++;
+        }, 30);
+      });
+
+      el.addEventListener('mouseleave', () => {
+        if (scrambleInterval) clearInterval(scrambleInterval);
+        const original = el.getAttribute('data-original');
+        if (original) el.innerText = original;
+      });
+    });
+
+    // Contact Form Test Logic Removed - Now using real FormSubmit
+
+    // Fullscreen and Cursor Logic
+    const fsBtn = document.getElementById('fullscreen-btn');
+    const galleryMain = document.querySelector('.proj-gallery-main');
+
+    if (fsBtn && galleryMain) {
+      fsBtn.addEventListener('click', () => {
+        if (!document.fullscreenElement) {
+          galleryMain.requestFullscreen().catch(err => {
+            console.log(`Error attempting to enable full-screen mode: ${err.message}`);
+          });
+        } else {
+          document.exitFullscreen();
+        }
+      });
+
+      galleryMain.addEventListener('mouseenter', () => {
+        const cursor = document.getElementById('cursor');
+        if (cursor) cursor.style.display = 'none';
+        document.body.classList.add('show-native-cursor');
+      });
+      galleryMain.addEventListener('mouseleave', () => {
+        if (!document.fullscreenElement) {
+          const cursor = document.getElementById('cursor');
+          if (cursor) cursor.style.display = 'flex';
+          document.body.classList.remove('show-native-cursor');
+        }
+      });
+    }
+
+    document.addEventListener('fullscreenchange', () => {
+      const cursor = document.getElementById('cursor');
+      if (document.fullscreenElement) {
+        if (cursor) cursor.style.display = 'none';
+        document.body.classList.add('show-native-cursor');
+      } else {
+        if (cursor) cursor.style.display = 'flex';
+        document.body.classList.remove('show-native-cursor');
+      }
+    });
+
+  </script>
+</body>
+
+</html>
