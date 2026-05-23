@@ -1352,6 +1352,10 @@
       padding-left: 1rem;
     }
 
+    .proj-disp-engine {
+      text-transform: uppercase;
+    }
+
     .spec-item {
       display: flex;
       gap: 0.5rem;
@@ -1990,11 +1994,11 @@
 
           <div class="hero-stats">
             <div class="stat-item">
-              <div class="stat-num">16+</div>
+              <div class="stat-num">13+</div>
               <div class="stat-label">Shipped Projects</div>
             </div>
             <div class="stat-item">
-              <div class="stat-num">7+</div>
+              <div class="stat-num">6+</div>
               <div class="stat-label">Years Exp</div>
             </div>
             <div class="stat-item">
@@ -2140,7 +2144,17 @@
               <span class="tag">Maya</span>
 
               <span class="tag">Git</span>
+              <span class="tag">SourceTree</span>
               <span class="tag">Jira</span>
+              <span class="tag">Mantis</span>
+              <span class="tag">Trello</span>
+              <span class="tag">Azure DevOps</span>
+              <span class="tag">AWS</span>
+              <span class="tag">Agile</span>
+              <span class="tag">Scrum</span>
+              <span class="tag">Python</span>
+              <span class="tag">VS Studio / Code</span>
+              <span class="tag">JetBrains Rider</span>
 
               <span class="tag">Sketching</span>
               <span class="tag">Digital Illustration</span>
@@ -2160,30 +2174,43 @@
         <div class="skills-container">
           <div class="skills-categories">
             <button class="skill-cat-btn active" data-cat="all">All Skills</button>
-            <button class="skill-cat-btn" data-cat="engine">Game Engines & IDE's</button>
+            <button class="skill-cat-btn" data-cat="engine">Game Engines</button>
             <button class="skill-cat-btn" data-cat="prog">Programming Languages</button>
-            <button class="skill-cat-btn" data-cat="art">Art & Design</button>
+            <button class="skill-cat-btn" data-cat="tools">Development Tools</button>
+            <button class="skill-cat-btn" data-cat="art">Art Assets</button>
             <button class="skill-cat-btn" data-cat="tech">Technical Systems</button>
           </div>
 
           <div class="skills-grid-wrapper">
             <div class="skills-grid">
+              <!-- Programming Languages -->
               <div class="skill-card" data-cat="prog" data-percent="92">
                 <span class="skill-icon">#️⃣</span>
                 <div class="skill-name">C#</div>
-                <p class="skill-desc">The backbone of Unity development. Mastering DOTS, ECS, custom editors, and highly
-                  scalable object-oriented architectures.</p>
+                <p class="skill-desc">Mastering DOTS, ECS, custom editor scripting, and highly scalable object-oriented
+                  gameplay frameworks in Unity.</p>
                 <div class="skill-bar-bg">
                   <div class="skill-bar-fill"></div>
                 </div>
                 <div class="skill-level"></div>
               </div>
 
-              <div class="skill-card" data-cat="prog" data-percent="78">
+              <div class="skill-card" data-cat="prog" data-percent="68">
                 <span class="skill-icon">➕</span>
                 <div class="skill-name">C++</div>
-                <p class="skill-desc">Native performance coding for Unreal Engine. Proficient in manual memory
-                  management, raw pointers, and complex gameplay frameworks.</p>
+                <p class="skill-desc">Native coding for Unreal Engine. Proficient in manual memory management, raw
+                  pointers, and complex gameplay systems.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="prog" data-percent="66">
+                <span class="skill-icon">🐍</span>
+                <div class="skill-name">PYTHON</div>
+                <p class="skill-desc">Designing robust asset pipeline tooling, scripting automated tasks, and custom
+                  build configurations.</p>
                 <div class="skill-bar-bg">
                   <div class="skill-bar-fill"></div>
                 </div>
@@ -2193,8 +2220,8 @@
               <div class="skill-card" data-cat="prog" data-percent="65">
                 <span class="skill-icon">🟨</span>
                 <div class="skill-name">JAVASCRIPT</div>
-                <p class="skill-desc">Web-based logic, Node.js backends, and tooling. Writing clean code for
-                  cross-platform integrations and WebGL frameworks.</p>
+                <p class="skill-desc">Web-based logic, Node backends, and tooling. Writing clean code for cross-platform
+                  integrations.</p>
                 <div class="skill-bar-bg">
                   <div class="skill-bar-fill"></div>
                 </div>
@@ -2204,8 +2231,8 @@
               <div class="skill-card" data-cat="prog" data-percent="79">
                 <span class="skill-icon">🟦</span>
                 <div class="skill-name">TYPESCRIPT</div>
-                <p class="skill-desc">Strictly typed web logic for scalable web apps, robust backend systems, and
-                  maintaining clean, error-free codebases.</p>
+                <p class="skill-desc">Strictly typed web logic for scalable web apps, robust backend systems, and clean
+                  codebase structures.</p>
                 <div class="skill-bar-bg">
                   <div class="skill-bar-fill"></div>
                 </div>
@@ -2215,8 +2242,8 @@
               <div class="skill-card" data-cat="prog" data-percent="82">
                 <span class="skill-icon">🌐</span>
                 <div class="skill-name">HTML5</div>
-                <p class="skill-desc">Structuring responsive web layers and complex UI overlays for browser-based games
-                  and interactive digital experiences.</p>
+                <p class="skill-desc">Structuring responsive web layers and complex UI overlays for browser-based
+                  interactive experiences.</p>
                 <div class="skill-bar-bg">
                   <div class="skill-bar-fill"></div>
                 </div>
@@ -2227,7 +2254,7 @@
                 <span class="skill-icon">🎨</span>
                 <div class="skill-name">CSS</div>
                 <p class="skill-desc">Crafting highly optimized, responsive styling and smooth animations for web
-                  applications and digital portfolios.</p>
+                  applications.</p>
                 <div class="skill-bar-bg">
                   <div class="skill-bar-fill"></div>
                 </div>
@@ -2237,52 +2264,42 @@
               <div class="skill-card" data-cat="prog" data-percent="59">
                 <span class="skill-icon">☕</span>
                 <div class="skill-name">JAVA</div>
-                <p class="skill-desc">Server-side matchmaking and mobile logic. Solid grasp of Android-specific
-                  architecture, JNI integrations, and profiling.</p>
+                <p class="skill-desc">Server-side matchmaking and mobile logic. Solid grasp of Android architecture and
+                  JNI integrations.</p>
                 <div class="skill-bar-bg">
                   <div class="skill-bar-fill"></div>
                 </div>
                 <div class="skill-level"></div>
               </div>
 
-              <div class="skill-card" data-cat="prog" data-percent="94">
-                <span class="skill-icon">🔀</span>
-                <div class="skill-name">GIT</div>
-                <p class="skill-desc">Version control mastery. Handling complex branching, merge conflict resolution,
-                  and automated CI/CD pipelines.</p>
-                <div class="skill-bar-bg">
-                  <div class="skill-bar-fill"></div>
-                </div>
-                <div class="skill-level"></div>
-              </div>
-
+              <!-- Game Engines -->
               <div class="skill-card" data-cat="engine" data-percent="94">
                 <span class="skill-icon">⬛</span>
                 <div class="skill-name">UNITY ENGINE</div>
-                <p class="skill-desc">Complete pipeline mastery in 3D & 2D. Utilizing ScriptableObjects, custom tools,
-                  URP/HDRP, and heavy CPU/GPU profiling.</p>
+                <p class="skill-desc">Complete pipeline mastery in 3D and 2D, ScriptableObjects, custom tools, and
+                  CPU/GPU profiling.</p>
                 <div class="skill-bar-bg">
                   <div class="skill-bar-fill"></div>
                 </div>
                 <div class="skill-level"></div>
               </div>
 
-              <div class="skill-card" data-cat="engine" data-percent="83">
+              <div class="skill-card" data-cat="engine" data-percent="74">
                 <span class="skill-icon">🆄</span>
                 <div class="skill-name">UNREAL ENGINE</div>
-                <p class="skill-desc">Experience with Lumen, Nanite, and Chaos physics. Building optimized Blueprint
-                  logic intertwined with native C++.</p>
+                <p class="skill-desc">Experience with Lumen, Nanite, and Chaos physics. Building optimized Blueprint and
+                  C++ frameworks.</p>
                 <div class="skill-bar-bg">
                   <div class="skill-bar-fill"></div>
                 </div>
                 <div class="skill-level"></div>
               </div>
 
-              <div class="skill-card" data-cat="engine" data-percent="76">
+              <div class="skill-card" data-cat="engine" data-percent="82">
                 <span class="skill-icon">⚙️</span>
-                <div class="skill-name">CONSTRUCT 2 / 3</div>
-                <p class="skill-desc">Rapid 2D prototyping and HTML5 game development. Deep understanding of event-sheet
-                  logic and rigid body behaviors.</p>
+                <div class="skill-name">CONSTRUCT ENGINE</div>
+                <p class="skill-desc">Rapid 2D prototyping and HTML5 game development, leveraging event sheets and
+                  behaviors.</p>
                 <div class="skill-bar-bg">
                   <div class="skill-bar-fill"></div>
                 </div>
@@ -2293,7 +2310,7 @@
                 <span class="skill-icon">🤖</span>
                 <div class="skill-name">GODOT</div>
                 <p class="skill-desc">Open-source engine workflows. Leveraging the Node-based architecture and GDScript
-                  for lightweight game deployment.</p>
+                  for lightweight games.</p>
                 <div class="skill-bar-bg">
                   <div class="skill-bar-fill"></div>
                 </div>
@@ -2303,8 +2320,8 @@
               <div class="skill-card" data-cat="engine" data-percent="78">
                 <span class="skill-icon">🌴</span>
                 <div class="skill-name">COCOS CREATOR</div>
-                <p class="skill-desc">Experience in alternative 2D game frameworks for specific mobile platform targets
-                  and specialized project needs.</p>
+                <p class="skill-desc">Experience in alternative 2D game frameworks for specific mobile platforms and
+                  lightweight targets.</p>
                 <div class="skill-bar-bg">
                   <div class="skill-bar-fill"></div>
                 </div>
@@ -2314,30 +2331,87 @@
               <div class="skill-card" data-cat="engine" data-percent="83">
                 <span class="skill-icon">🔨</span>
                 <div class="skill-name">GAME MAKER</div>
-                <p class="skill-desc">Strong foundational knowledge in 2D engine workflows, sprite management, and
-                  room-based level logic.</p>
+                <p class="skill-desc">Strong foundational knowledge in 2D engine workflows, sprite management, and room
+                  setups.</p>
                 <div class="skill-bar-bg">
                   <div class="skill-bar-fill"></div>
                 </div>
                 <div class="skill-level"></div>
               </div>
 
-              <div class="skill-card" data-cat="engine" data-percent="55">
+              <!-- Development Tools -->
+              <div class="skill-card" data-cat="tools" data-percent="94">
+                <span class="skill-icon">🔀</span>
+                <div class="skill-name">GIT / SOURCETREE</div>
+                <p class="skill-desc">Version control mastery. Handling complex branching, merge conflicts, and CI/CD
+                  pipelines.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="tools" data-percent="91">
+                <span class="skill-icon">🟣</span>
+                <div class="skill-name">VS STUDIO / CODE</div>
+                <p class="skill-desc">C++ development, performance compiling, and deep debugging tools for Unreal
+                  Engine.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="tools" data-percent="78">
+                <span class="skill-icon">🔴</span>
+                <div class="skill-name">JETBRAINS RIDER</div>
+                <p class="skill-desc">High-performance IDE for C# and Unity, featuring deep inspections and refactoring
+                  tools.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="tools" data-percent="55">
                 <span class="skill-icon">📱</span>
                 <div class="skill-name">ANDROID STUDIO</div>
-                <p class="skill-desc">Deep mobile optimization. Integrating ad networks, SDKs, native Android debugging,
-                  and strict APK/AAB size limits.</p>
+                <p class="skill-desc">Deep mobile optimization, SDK integrations, native debugging, and strict size
+                  management.</p>
                 <div class="skill-bar-bg">
                   <div class="skill-bar-fill"></div>
                 </div>
                 <div class="skill-level"></div>
               </div>
 
+              <div class="skill-card" data-cat="tools" data-percent="85">
+                <span class="skill-icon">📋</span>
+                <div class="skill-name">JIRA / MANTIS / TRELLO</div>
+                <p class="skill-desc">Managing active sprints, configuring task boards, and tracking workflow pipelines.
+                </p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="tools" data-percent="75">
+                <span class="skill-icon">☁️</span>
+                <div class="skill-name">AZURE DEVOPS</div>
+                <p class="skill-desc">Setting up continuous builds, automated testing pipelines, and repo sync
+                  workflows.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <!-- Art Assets -->
               <div class="skill-card" data-cat="art" data-percent="75">
                 <span class="skill-icon">🧊</span>
                 <div class="skill-name">BLENDER</div>
-                <p class="skill-desc">Organic and hard-surface 3D modeling. Specializing in retopology, efficient UV
-                  unwrapping, and game-ready meshes.</p>
+                <p class="skill-desc">Organic and hard-surface 3D modeling. Retopology, UV unwrapping, and game-ready
+                  mesh creation.</p>
                 <div class="skill-bar-bg">
                   <div class="skill-bar-fill"></div>
                 </div>
@@ -2347,74 +2421,19 @@
               <div class="skill-card" data-cat="art" data-percent="60">
                 <span class="skill-icon">〽️</span>
                 <div class="skill-name">MAYA</div>
-                <p class="skill-desc">Industry-standard 3D pipelines. Managing complex rigs, skinning, and exporting
-                  clean animation data to game engines.</p>
+                <p class="skill-desc">Industry-standard 3D pipelines. Managing complex rigs, skinning, and animation
+                  data exports.</p>
                 <div class="skill-bar-bg">
                   <div class="skill-bar-fill"></div>
                 </div>
                 <div class="skill-level"></div>
               </div>
 
-              <div class="skill-card" data-cat="art" data-percent="90">
-                <span class="skill-icon">🖼️</span>
-                <div class="skill-name">ADOBE PHOTOSHOP</div>
-                <p class="skill-desc">Raster asset creation. Designing highly-readable UI sprites, seamless tiling
-                  textures, and striking concept art.</p>
-                <div class="skill-bar-bg">
-                  <div class="skill-bar-fill"></div>
-                </div>
-                <div class="skill-level"></div>
-              </div>
-
-              <div class="skill-card" data-cat="art" data-percent="88">
-                <span class="skill-icon">✒️</span>
-                <div class="skill-name">ADOBE ILLUSTRATOR</div>
-                <p class="skill-desc">Vector illustration for scalable assets. Crafting clean logos, iconography, and
-                  distinct, stylized aesthetic elements.</p>
-                <div class="skill-bar-bg">
-                  <div class="skill-bar-fill"></div>
-                </div>
-                <div class="skill-level"></div>
-              </div>
-
-              <div class="skill-card" data-cat="art" data-percent="87">
-                <span class="skill-icon">🎬</span>
-                <div class="skill-name">ADOBE PREMIERE PRO</div>
-                <p class="skill-desc">High-impact cinematic editing. Producing engaging game trailers, content creation,
-                  and slick promotional sequences.</p>
-                <div class="skill-bar-bg">
-                  <div class="skill-bar-fill"></div>
-                </div>
-                <div class="skill-level"></div>
-              </div>
-
-              <div class="skill-card" data-cat="art" data-percent="57">
-                <span class="skill-icon">✨</span>
-                <div class="skill-name">AFTER EFFECTS</div>
-                <p class="skill-desc">Advanced motion graphics and post-production. Elevating trailers with dynamic text
-                  and custom VFX overlays.</p>
-                <div class="skill-bar-bg">
-                  <div class="skill-bar-fill"></div>
-                </div>
-                <div class="skill-level"></div>
-              </div>
-
-              <div class="skill-card" data-cat="art" data-percent="86">
-                <span class="skill-icon">📐</span>
-                <div class="skill-name">FIGMA</div>
-                <p class="skill-desc">Collaborative UI/UX wireframing. Building intuitive player interfaces, HUDs, and
-                  seamless menu flows.</p>
-                <div class="skill-bar-bg">
-                  <div class="skill-bar-fill"></div>
-                </div>
-                <div class="skill-level"></div>
-              </div>
-
-              <div class="skill-card" data-cat="art" data-percent="74">
-                <span class="skill-icon">📱</span>
-                <div class="skill-name">ADOBE XD</div>
-                <p class="skill-desc">Rapid interface prototyping and interactive design documentation for game menus
-                  and application structures.</p>
+              <div class="skill-card" data-cat="art" data-percent="52">
+                <span class="skill-icon">🖌️</span>
+                <div class="skill-name">SUBSTANCE PAINTER</div>
+                <p class="skill-desc">Creating photorealistic materials and baking high-poly details to low-poly maps.
+                </p>
                 <div class="skill-bar-bg">
                   <div class="skill-bar-fill"></div>
                 </div>
@@ -2425,18 +2444,71 @@
                 <span class="skill-icon">👗</span>
                 <div class="skill-name">MARVELOUS DESIGNER</div>
                 <p class="skill-desc">Advanced 3D cloth simulation. Designing realistic garments and dynamic fabric
-                  physics for character assets.</p>
+                  physics.</p>
                 <div class="skill-bar-bg">
                   <div class="skill-bar-fill"></div>
                 </div>
                 <div class="skill-level"></div>
               </div>
 
-              <div class="skill-card" data-cat="art" data-percent="52">
-                <span class="skill-icon">🖌️</span>
-                <div class="skill-name">SUBSTANCE PAINTER</div>
-                <p class="skill-desc">Creating photorealistic materials. Baking high-poly details to low-poly maps for
-                  AAA-quality PBR workflows.</p>
+              <div class="skill-card" data-cat="art" data-percent="86">
+                <span class="skill-icon">📐</span>
+                <div class="skill-name">FIGMA</div>
+                <p class="skill-desc">Collaborative UI/UX wireframing. Building intuitive player interfaces, HUDs, and
+                  menu flows.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="art" data-percent="74">
+                <span class="skill-icon">📱</span>
+                <div class="skill-name">ADOBE XD</div>
+                <p class="skill-desc">Interface prototyping and design documentation for game menus and applications.
+                </p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="art" data-percent="90">
+                <span class="skill-icon">🖼️</span>
+                <div class="skill-name">ADOBE PHOTOSHOP</div>
+                <p class="skill-desc">Raster asset creation. Designing highly-readable UI sprites and concept art.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="art" data-percent="88">
+                <span class="skill-icon">✒️</span>
+                <div class="skill-name">ADOBE ILLUSTRATOR</div>
+                <p class="skill-desc">Vector illustration for scalable assets. Crafting clean logos and iconographies.
+                </p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="art" data-percent="87">
+                <span class="skill-icon">🎬</span>
+                <div class="skill-name">ADOBE PREMIERE PRO</div>
+                <p class="skill-desc">Cinematic editing. Producing engaging game trailers and promotional sequences.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="art" data-percent="57">
+                <span class="skill-icon">✨</span>
+                <div class="skill-name">AFTER EFFECTS</div>
+                <p class="skill-desc">Advanced motion graphics. Elevating trailers with dynamic text and custom VFX
+                  overlays.</p>
                 <div class="skill-bar-bg">
                   <div class="skill-bar-fill"></div>
                 </div>
@@ -2446,18 +2518,19 @@
               <div class="skill-card" data-cat="art" data-percent="53">
                 <span class="skill-icon">💻</span>
                 <div class="skill-name">ADOBE DREAMWEAVER</div>
-                <p class="skill-desc">Web design and HTML editing toolkit for managing site structures, managing code,
-                  and visual interface rendering.</p>
+                <p class="skill-desc">Web design and HTML editing toolkit for managing site structures and rendering.
+                </p>
                 <div class="skill-bar-bg">
                   <div class="skill-bar-fill"></div>
                 </div>
                 <div class="skill-level"></div>
               </div>
 
+              <!-- Technical Systems -->
               <div class="skill-card" data-cat="tech" data-percent="88">
                 <span class="skill-icon">🎮</span>
-                <div class="skill-name">GAME & LEVEL DESIGN</div>
-                <p class="skill-desc">Core loop prototyping, precise spatial logic, pacing analysis, and designing
+                <div class="skill-name">GAMEPLAY DESIGN</div>
+                <p class="skill-desc">Core loop prototyping, systems tuning, pacing analysis, and designing
                   player-driven affordances.</p>
                 <div class="skill-bar-bg">
                   <div class="skill-bar-fill"></div>
@@ -2466,10 +2539,32 @@
               </div>
 
               <div class="skill-card" data-cat="tech" data-percent="82">
+                <span class="skill-icon">🗺️</span>
+                <div class="skill-name">LEVEL DESIGN</div>
+                <p class="skill-desc">Creating immersive spaces, sightlines, quest layouts, and pacing for open or
+                  instanced maps.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="tech" data-percent="82">
                 <span class="skill-icon">🌟</span>
-                <div class="skill-name">TECH ART & SHADERS</div>
-                <p class="skill-desc">Writing custom HLSL/GLSL. Utilizing Shader Graphs for post-processing effects,
-                  unlit aesthetics, and VFX.</p>
+                <div class="skill-name">SHADER PROGRAMMING / GRAPHS</div>
+                <p class="skill-desc">Writing custom HLSL/GLSL shaders for special effects, visual stylization, and
+                  post-processing.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="tech" data-percent="80">
+                <span class="skill-icon">🎨</span>
+                <div class="skill-name">TECHNICAL ART</div>
+                <p class="skill-desc">Bridging visual pipelines. Building post-process scripts, lighting pipelines, and
+                  tool optimizations.</p>
                 <div class="skill-bar-bg">
                   <div class="skill-bar-fill"></div>
                 </div>
@@ -2478,9 +2573,20 @@
 
               <div class="skill-card" data-cat="tech" data-percent="87">
                 <span class="skill-icon">🧠</span>
-                <div class="skill-name">AI & SMART LOGIC</div>
-                <p class="skill-desc">Building responsive, intelligent enemy agents utilizing Behavior Trees, finite
-                  state machines, and dynamic NavMesh.</p>
+                <div class="skill-name">ARTIFICIAL INTELLIGENCE</div>
+                <p class="skill-desc">Building responsive, intelligent enemy agents utilizing finite state machines and
+                  dynamic pathfinding.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="tech" data-percent="85">
+                <span class="skill-icon">🌳</span>
+                <div class="skill-name">BEHAVIOR TREES</div>
+                <p class="skill-desc">Architecting modular NPC behavior trees, blackboard keys, and custom decorator
+                  conditions.</p>
                 <div class="skill-bar-bg">
                   <div class="skill-bar-fill"></div>
                 </div>
@@ -2490,8 +2596,8 @@
               <div class="skill-card" data-cat="tech" data-percent="72">
                 <span class="skill-icon">🌐</span>
                 <div class="skill-name">MULTIPLAYER SYSTEMS</div>
-                <p class="skill-desc">Architecting robust online and local couch-coop mechanics. Managing client-server
-                  synchronization and Photon.</p>
+                <p class="skill-desc">Architecting robust online and local couch-coop mechanics, client-server
+                  synchronization, and Photon.</p>
                 <div class="skill-bar-bg">
                   <div class="skill-bar-fill"></div>
                 </div>
@@ -2501,8 +2607,8 @@
               <div class="skill-card" data-cat="tech" data-percent="89">
                 <span class="skill-icon">🕹️</span>
                 <div class="skill-name">CROSS-PLATFORM INPUT</div>
-                <p class="skill-desc">Architecting responsive control schemes. Mastering Unreal's Enhanced Input,
-                  Unity's New Input System, and touch.</p>
+                <p class="skill-desc">Architecting control schemes. Mastering Enhanced Input, Unity New Input System,
+                  and touch gestures.</p>
                 <div class="skill-bar-bg">
                   <div class="skill-bar-fill"></div>
                 </div>
@@ -2511,9 +2617,20 @@
 
               <div class="skill-card" data-cat="tech" data-percent="84">
                 <span class="skill-icon">☁️</span>
-                <div class="skill-name">BACKEND & APIS</div>
-                <p class="skill-desc">Integrating Firebase, REST APIs, and cloud databases for secure player
-                  authentication, cloud saves, and scalable live-ops ecosystems.</p>
+                <div class="skill-name">BACKEND SERVICES</div>
+                <p class="skill-desc">Integrating cloud services like Firebase for secure user profiles and persistent
+                  data storage.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="tech" data-percent="82">
+                <span class="skill-icon">🔌</span>
+                <div class="skill-name">API INTEGRATION</div>
+                <p class="skill-desc">Consuming REST APIs, managing network payloads, and mapping game data client-side.
+                </p>
                 <div class="skill-bar-bg">
                   <div class="skill-bar-fill"></div>
                 </div>
@@ -2522,9 +2639,20 @@
 
               <div class="skill-card" data-cat="tech" data-percent="83">
                 <span class="skill-icon">💰</span>
-                <div class="skill-name">MONETIZATION & IAP</div>
-                <p class="skill-desc">Implementing In-App Purchases, Google AdSense, and real-money gaming SDKs to build
-                  sustainable, balanced game economies.</p>
+                <div class="skill-name">MONETIZATION SYSTEMS</div>
+                <p class="skill-desc">Structuring in-game economies, reward systems, virtual currency loops, and
+                  storefront designs.</p>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill"></div>
+                </div>
+                <div class="skill-level"></div>
+              </div>
+
+              <div class="skill-card" data-cat="tech" data-percent="80">
+                <span class="skill-icon">💳</span>
+                <div class="skill-name">IN-APP PURCHASES</div>
+                <p class="skill-desc">Implementing secure store systems, Google Play Billing, and Apple StoreKit
+                  transactions.</p>
                 <div class="skill-bar-bg">
                   <div class="skill-bar-fill"></div>
                 </div>
@@ -2593,7 +2721,8 @@
         <!-- Project Filters -->
         <div class="project-filters">
           <div class="proj-tabs">
-            <button class="proj-tab active" data-type="launched">PROFESSIONAL PROJECTS</button>
+            <button class="proj-tab active" data-type="all">ALL PROJECTS</button>
+            <button class="proj-tab" data-type="launched">PROFESSIONAL PROJECTS</button>
             <button class="proj-tab" data-type="learning">LEARNING / JAMS</button>
           </div>
           <div class="proj-tags">
@@ -2903,7 +3032,7 @@
             data-title="LEVIATHAN PROTOTYPE" data-genre="THIRD-PERSON ACTION" data-platform="PC" data-date="2020"
             data-desc="Leviathan is a focused technical prototype designed to reverse-engineer and perfect one of gaming's most satisfying mechanics: Kratos's axe throw and recall. Built in Unreal Engine, it serves as a playground for advanced physics manipulation and animation blending.<br><br>As a solo learning venture into the Unreal ecosystem, I relied heavily on Blueprint visual scripting to handle the complex vector math, physics curves, and root motion animations required for the axe behavior. I fleshed out the prototype by designing an atmospheric environment, integrating particle trails, and refining the camera logic to ensure the mechanic felt incredibly heavy and satisfying."
             data-tags="Blueprints,Root Motion,VFX,Physics,Environment Design" data-links=""
-            data-video="https://youtu.be/a43EBb4DZYg"
+            data-video="https://youtu.be/3h1XrPBOBhk"
             data-screens="assets/projects/Unreal/Axe/a_1.webp,assets/projects/Unreal/Axe/a_2.webp,assets/projects/Unreal/Axe/a_3.webp,assets/projects/Unreal/Axe/a_4.webp"
             data-thumb="assets/projects/Unreal/Axe/a_1.webp">
             <span class="project-num">15</span>
@@ -2922,7 +3051,7 @@
             data-genre="PUZZLE-PLATFORMER" data-platform="Web" data-date="2020"
             data-desc="The Drop is a clever 2D physics puzzle-platformer where players control a sentient water droplet. To navigate complex pipe labyrinths, players must dynamically shift between solid, liquid, and gaseous states to bypass environmental hazards and reach the exit.<br><br>Created during a collaborative Game Jam using Construct 2, I took charge of the technical level design and core state-machine logic. I programmed the distinct physics profiles for each state of matter, wired up the visual scripting, and implemented the UI and audio systems. It was a brilliant exercise in designing mechanics around physics constraints and delivering a complete, playable puzzle loop under pressure."
             data-tags="Visual Scripting,Level Design,Game Jam,Physics Puzzles" data-links=""
-            data-video="https://youtu.be/h4rkq_6W8zY"
+            data-video="https://youtu.be/a43EBb4DZYg"
             data-screens="assets/projects/Construct/Drop/d_1.webp,assets/projects/Construct/Drop/d_2.webp,assets/projects/Construct/Drop/d_3.webp,assets/projects/Construct/Drop/d_4.webp,assets/projects/Construct/Drop/d_5.webp,assets/projects/Construct/Drop/d_6.webp"
             data-thumb="assets/projects/Construct/Drop/d_1.webp">
             <span class="project-num">16</span>
@@ -2941,7 +3070,7 @@
             data-genre="LOCAL MULTIPLAYER" data-platform="Web" data-date="2020"
             data-desc="Firezen is a rapid-prototype local multiplayer 2D fighting game built as a technical homage to the classic 'Little Fighter 2'. Two players share a single keyboard to engage in fast-paced, combo-heavy arena combat.<br><br>As a solo project to master Construct 2, I reverse-engineered fighting game logic utilizing pure visual scripting. I built the complex input buffers required for shared-keyboard play, programmed the hitboxes and collision states, and orchestrated the animation timelines. Utilizing publicly available assets, I focused entirely on ensuring the combat felt responsive, fair, and incredibly fun, solidifying my foundational understanding of multiplayer combat design."
             data-tags="Visual Scripting,Local Multiplayer,Combat Systems,Rapid Prototyping" data-links=""
-            data-video="assets/projects/Construct/Firezen/Firezen.mp4"
+            data-video="https://youtu.be/h4rkq_6W8zY"
             data-screens="assets/projects/Construct/Firezen/f_1.webp,assets/projects/Construct/Firezen/f_2.webp,assets/projects/Construct/Firezen/f_3.webp,assets/projects/Construct/Firezen/f_4.webp"
             data-thumb="assets/projects/Construct/Firezen/f_1.webp">
             <span class="project-num">17</span>
@@ -3376,7 +3505,7 @@
     const projTags = document.querySelectorAll('.proj-tag');
     const projRows = document.querySelectorAll('.project-row');
 
-    let currentType = 'launched';
+    let currentType = 'all';
     let currentEngine = 'all';
 
     const projDisplay = document.getElementById('project-display');
@@ -3439,7 +3568,7 @@
       dispTitle.textContent = row.dataset.title || '';
       dispTitle.setAttribute('data-original', row.dataset.title || '');
       dispGenre.textContent = row.dataset.genre || '';
-      dispEngine.textContent = row.dataset.engine || '';
+      dispEngine.textContent = (row.dataset.engine || '').toUpperCase();
       dispPlatform.textContent = row.dataset.platform || '';
       dispDesc.innerHTML = row.dataset.desc || '';
 
@@ -3540,8 +3669,8 @@
         vThumb.style.background = coverImg ? `url('${coverImg}') center/cover` : '#222';
         vThumb.style.position = 'relative';
         vThumb.innerHTML = `
-          <div style="position:absolute; top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;">
-             <div style="width:28px;height:28px;border:2px solid var(--red);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--red);font-size:0.8rem;padding-left:3px;background:rgba(0,0,0,0.6);backdrop-filter:blur(2px);">▶</div>
+          <div style="position:absolute; top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;">
+             <div style="width:36px;height:36px;border:2px solid #fff;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.1rem;padding-left:3px;background:var(--red);box-shadow:0 0 10px var(--red);transition:transform 0.2s ease;">▶</div>
           </div>
         `;
         vThumb.onclick = () => {
@@ -3595,7 +3724,7 @@
       let firstVisible = null;
       let visibleCount = 0;
       projRows.forEach(row => {
-        const matchType = row.dataset.type === currentType;
+        const matchType = currentType === 'all' || row.dataset.type === currentType;
         const matchEngine = currentEngine === 'all' || row.dataset.engine.toLowerCase().includes(currentEngine.toLowerCase());
         if (matchType && matchEngine) {
           row.style.display = 'grid';
@@ -3939,12 +4068,10 @@
         'PROGRAMMER',
         'SYSTEMS ARCHITECT',
         'GAME DESIGNER',
-        'LEVEL DESIGNER',
         'GAMER',
         'TECH ARTIST',
         '3D ARTIST',
         'ANIMATOR',
-        'VFX ARTIST',
         'UI/UX DESIGNER',
         'WEB DEV',
         'ILLUSTRATOR',
