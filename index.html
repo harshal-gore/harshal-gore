@@ -1856,10 +1856,80 @@
       animation: fadeUp 0.7s ease both;
       animation-delay: 0.45s;
     }
+
+    /* -- MOBILE SUPPORT -- */
+    #mobile-rotate-overlay {
+      display: none;
+    }
+
+    @media (pointer: coarse) {
+      .cursor {
+        display: none !important;
+      }
+
+      body,
+      body * {
+        cursor: auto !important;
+      }
+
+      #mobile-rotate-overlay {
+        position: fixed;
+        inset: 0;
+        background: var(--bg);
+        z-index: 9999999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 2rem;
+      }
+
+      .rotate-icon {
+        font-size: 3rem;
+        margin-bottom: 1.5rem;
+        animation: rotatePhone 2s infinite ease-in-out;
+      }
+
+      .rotate-text {
+        font-family: var(--font-display);
+        font-size: 2.5rem;
+        color: var(--text);
+        letter-spacing: 0.1em;
+        line-height: 1.2;
+      }
+
+      .rotate-sub {
+        font-family: var(--font-mono);
+        font-size: 0.9rem;
+        color: var(--red);
+        margin-top: 1.5rem;
+        opacity: 0.8;
+      }
+
+      @keyframes rotatePhone {
+        0% {
+          transform: rotate(0deg);
+        }
+
+        50% {
+          transform: rotate(-90deg);
+        }
+
+        100% {
+          transform: rotate(0deg);
+        }
+      }
+    }
   </style>
 </head>
 
 <body>
+  <div id="mobile-rotate-overlay">
+    <div class="rotate-icon">📱</div>
+    <div class="rotate-text">PLEASE ROTATE<br>YOUR DEVICE</div>
+    <div class="rotate-sub">Landscape mode is required for the best experience.</div>
+  </div>
   <div class="cursor" id="cursor"></div>
   <div id="app-viewport">
 
@@ -2495,15 +2565,12 @@
             </div>
 
             <p class="proj-disp-desc">
-              <!-- Dynamically injected project description -->
             </p>
 
             <div class="proj-disp-tags">
-              <!-- Dynamically injected tags -->
             </div>
 
             <div class="proj-disp-links">
-              <!-- Dynamically injected external links -->
             </div>
           </div>
 
@@ -2519,7 +2586,6 @@
               <button id="fullscreen-btn" class="proj-fullscreen-btn" title="Toggle Fullscreen">⛶</button>
             </div>
             <div class="proj-gallery-thumbs" id="proj-gallery-thumbs">
-              <!-- Dynamically injected media thumbnails -->
             </div>
           </div>
         </div>
@@ -3092,12 +3158,6 @@
 
   </div>
   <script>
-    /**
-     * PORTFOLIO INTERACTIVITY
-     * -----------------------
-     * Responsible for dynamic media loading, custom cursor physics, 
-     * scroll-based intersection observers, and UI state management.
-     */
     function getInternalY(el) {
       let y = 0;
       while (el && el.id !== 'scroll-container') {
@@ -3113,12 +3173,16 @@
       const baseW = 2560;
       const baseH = 1440;
 
-      if (winH > winW) {
-        // Portrait mode -> rotate 90deg to force landscape exploration
-        const scale = Math.min(winW / baseH, winH / baseW);
-        appViewport.style.transform = `translate(-50%, -50%) scale(${scale}) rotate(90deg)`;
+      const rotateOverlay = document.getElementById('mobile-rotate-overlay');
+      const isMobile = window.matchMedia("(pointer: coarse)").matches;
+
+      if (winH > winW && isMobile) {
+        if (rotateOverlay) rotateOverlay.style.display = 'flex';
+        appViewport.style.display = 'none';
       } else {
-        // Landscape mode -> standard letterbox
+        if (rotateOverlay) rotateOverlay.style.display = 'none';
+        appViewport.style.display = 'block';
+
         const scale = Math.min(winW / baseW, winH / baseH);
         appViewport.style.transform = `translate(-50%, -50%) scale(${scale})`;
       }
@@ -3138,8 +3202,6 @@
         if (el.id === 'music-player' && el.classList.contains('maximized')) return;
         cursor.style.transform = 'scale(3)';
 
-        // Keep full opacity for precise buttons/links so they perfectly color-invert and remain visible.
-        // Use 0.5 opacity for large cards so the cursor is a subtle highlight.
         if (el.tagName === 'A' || el.tagName === 'BUTTON' || el.classList.contains('music-scrubber') || el.classList.contains('volume-slider') || el.classList.contains('vol-icon')) {
           cursor.style.opacity = '1';
         } else {
@@ -3692,7 +3754,7 @@
 
       progressFill.style.width = '0%';
       currTimeEl.textContent = "0:00";
-      totalTimeEl.textContent = "0:00"; // Will update on loadedmetadata
+      totalTimeEl.textContent = "0:00";
 
       if (isPlaying) {
         audioEl.play().catch(e => console.log('Audio play failed:', e));
@@ -3850,7 +3912,7 @@
         if (val > 0) {
           lastVolume = val;
         } else {
-          lastVolume = 0.01; // 1% as the fallback last valid volume
+          lastVolume = 0.01;
         }
         updateVolumeUI(val);
       });
